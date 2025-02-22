@@ -1,18 +1,17 @@
+from django.contrib import messages
 from django.shortcuts import render, redirect
-from .models import Floor
+from hierarchy.forms import FloorForm
 
 def add_floor(request):
     if request.method == 'POST':
-        # Obtén los datos del formulario
-        description = request.POST.get('description')
-        status = request.POST.get('status') == 'True'  # Convierte el valor a booleano
+        form = FloorForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Piso agregado correctamente.")
+            return redirect('hierarchy:add_floor')  # Redirige después de guardar
+        else:
+            messages.error(request, "Hubo un error al agregar el piso.")
+    else:
+        form = FloorForm()
 
-        # Crea un nuevo objeto Floor y guárdalo en la base de datos
-        Floor.objects.create(
-            description=description,
-            status=status
-        )
-        return redirect('#')  # Redirige a la lista de pisos (o a donde desees)
-    
-    # Si no es una solicitud POST, simplemente renderiza el formulario
-    return render(request, 'home/icons.html')
+    return render(request, 'hierarchy/add_floor.html', {'form': form})

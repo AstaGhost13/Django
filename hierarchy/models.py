@@ -18,8 +18,6 @@ class Floor(models.Model):
     status = models.BooleanField(default=True)
     description = models.CharField(max_length=5000, blank=False, null=False, verbose_name='Descripción', unique=True)
 
-
-    
     def __str__(self):
         return self.description
 

@@ -1,6 +1,7 @@
 from django.urls import path
-from .views import add_floor
+from . import views
 
+app_name = 'hierarchy' 
 urlpatterns = [
-    path('add-floor/', add_floor, name='add_floor'),
+    path('add-floor/', views.add_floor, name='add_floor'),
 ]

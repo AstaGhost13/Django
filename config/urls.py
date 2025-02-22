@@ -19,6 +19,7 @@ from django.urls import include,path  # add this
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path("", include("apps.authentication.urls")), # Auth routes - login / register
-    path("", include("apps.home.urls"))             # UI Kits Html files
+    path('hierarchy/', include('hierarchy.urls')),  # Incluye las URLs de 'hierarchy'
+    path("", include("apps.authentication.urls")),  # Rutas de autenticación
+    path('', include("apps.home.urls")),  # Rutas de home
 ]

@@ -10,7 +10,7 @@ urlpatterns = [
 
     path('', views.index, name='home'),
     path('floors/', views.floors_list, name='floors_list'),
-
+    path('departments/', views.departments_list, name='departments_list'),
     # Coloca la expresión regular al final para evitar conflictos
     re_path(r'^.*\.*', views.pages, name='pages'),
 

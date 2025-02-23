@@ -49,9 +49,12 @@ def pages(request):
         return HttpResponse(html_template.render(context, request))
     
 from django.shortcuts import render
-from hierarchy.models import Floor
+from hierarchy.models import *
 
 def floors_list(request):
     floors = Floor.objects.all()  # Obtener todos los pisos
     return render(request, 'home/floors_list.html', {'floors': floors})
 
+def departments_list(request):
+    departments = Department.objects.all()  # Obtener todos los departamentos
+    return render(request, 'home/departments_list.html', {'departments': departments})

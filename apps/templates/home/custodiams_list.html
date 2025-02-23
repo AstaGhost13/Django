@@ -1,0 +1,111 @@
+{% extends 'layouts/base.html' %}
+
+{% block title %} Lista de Custodios {% endblock title %}
+
+{% block content %}
+
+<!-- Header -->
+<div class="header bg-gradient-primary pb-8 pt-5 pt-md-8">
+  <div class="container-fluid">
+    <div class="header-body">
+      <h1 class="text-white">Lista de Custodios</h1>
+    </div>
+  </div>
+</div>
+
+<!-- Contenido principal -->
+<div class="container-fluid mt--7">
+  <div class="row">
+    <div class="col">
+      <div class="card shadow">
+        <div class="card-header bg-transparent">
+          <h3 class="mb-0">Custodios Registrados</h3>
+        </div>
+        <div class="card-body">
+          <!-- Mostrar mensajes de Django -->
+          {% if messages %}
+            <div class="container mt-3">
+              {% for message in messages %}
+                <div class="alert alert-{{ message.tags }}">
+                  {{ message }}
+                </div>
+              {% endfor %}
+            </div>
+          {% endif %}
+
+          <!-- Lista de custodios -->
+          <div class="container">
+            <div class="row">
+              {% for custodiam in custodiams %}
+                <div class="col-md-6">
+                  <div class="card mb-3">
+                    <div class="card-body">
+                      <h5 class="card-title">{{ custodiam.first_name }} {{ custodiam.last_name }}</h5>
+                      <p class="card-text">
+                        <strong>Cargo:</strong>
+                        {% if custodiam.position %}
+                          {{ custodiam.position.description }}
+                        {% else %}
+                          <span class="text-muted">Sin cargo asignado</span>
+                        {% endif %}
+                      </p>
+                      <p class="card-text">
+                        <strong>Teléfono:</strong>
+                        {% if custodiam.phone_number %}
+                          {{ custodiam.phone_number }}
+                        {% else %}
+                          <span class="text-muted">Sin teléfono</span>
+                        {% endif %}
+                      </p>
+                      <p class="card-text">
+                        <strong>Dirección:</strong>
+                        {% if custodiam.address %}
+                          {{ custodiam.address }}
+                        {% else %}
+                          <span class="text-muted">Sin dirección</span>
+                        {% endif %}
+                      </p>
+                      <p class="card-text">
+                        <strong>Referencia:</strong>
+                        {% if custodiam.reference %}
+                          {{ custodiam.reference }}
+                        {% else %}
+                          <span class="text-muted">Sin referencia</span>
+                        {% endif %}
+                      </p>
+                      <p class="card-text">
+                        <strong>Correo electrónico:</strong>
+                        {{ custodiam.email }}
+                      </p>
+                      <p class="card-text">
+                        <strong>Estado:</strong>
+                        {% if custodiam.status %}
+                          <span class="text-success">Activo</span>
+                        {% else %}
+                          <span class="text-danger">Inactivo</span>
+                        {% endif %}
+                      </p>
+                      <p class="card-text">
+                        <small class="text-muted">Creado el: {{ custodiam.created_at|date:"d/m/Y H:i" }}</small>
+                      </p>
+                      <a href="#" class="btn btn-primary">Editar</a>
+                      <a href="#" class="btn btn-danger">Eliminar</a>
+                    </div>
+                  </div>
+                </div>
+                {% if forloop.counter|divisibleby:2 and not forloop.last %}
+                  <div class="w-100"></div>
+                {% endif %}
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  {% include "includes/footer.html" %}
+</div>
+
+{% endblock content %}

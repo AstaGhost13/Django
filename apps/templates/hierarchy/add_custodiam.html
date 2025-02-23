@@ -1,0 +1,49 @@
+{% extends 'layouts/base.html' %}
+
+{% block title %} Agregar Custodio {% endblock title %}
+
+{% block content %}
+<div class="header bg-gradient-primary pb-8 pt-5 pt-md-8">
+    <div class="container-fluid">
+        <div class="header-body">
+            <h1 class="text-white">Agregar Custodio</h1>
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid mt--7">
+    <div class="row">
+        <div class="col">
+            <div class="card shadow">
+                <div class="card-header bg-transparent">
+                    <h3 class="mb-0">Formulario de Custodio</h3>
+                </div>
+
+                <div class="card-body">
+                    {% if messages %}
+                        <div class="container mt-3">
+                            {% for message in messages %}
+                                <div class="alert alert-{{ message.tags }}">
+                                    {{ message }}
+                                </div>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+
+                    <form method="POST" action="{% url 'hierarchy:add_custodiam' %}">
+                        {% csrf_token %}
+                        {{ form.as_p }}  <!-- Renderiza el formulario dinámicamente -->
+                        <button type="submit" class="btn btn-primary">Guardar</button>
+                    </form>
+
+                    <!-- Botón para redirigir a la lista de custodios -->
+                    <a href="{% url 'home:custodiams_list' %}" class="btn btn-secondary">Ver Custodios</a>
+
+                </div>   
+                   
+            </div>
+        </div>
+    </div>
+    {% include "includes/footer.html" %}
+</div>
+{% endblock content %}

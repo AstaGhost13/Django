@@ -62,3 +62,7 @@ def departments_list(request):
 def positions_list(request):
     positions = Position.objects.all()  # Obtener todos los departamentos
     return render(request, 'home/positions_list.html', {'positions': positions})
+
+def custodiams_list(request):
+    custodiams = Custodiam.objects.all()  # Obtener todos los departamentos
+    return render(request, 'home/custodiams_list.html', {'custodiams': custodiams})

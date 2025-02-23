@@ -1,5 +1,5 @@
 from django import forms
-from .models import Floor, Department ,Position
+from .models import Custodiam, Floor, Department ,Position
 
 class FloorForm(forms.ModelForm):
     class Meta:
@@ -18,4 +18,8 @@ class PositionForm(forms.ModelForm):
         model = Position
         fields = ['description', 'status', 'department']
 
-     
+
+class CustodiamForm(forms.ModelForm):
+    class Meta:
+        model = Custodiam
+        fields = ['status','first_name', 'last_name', 'phone_number', 'address', 'reference', 'email', 'position']

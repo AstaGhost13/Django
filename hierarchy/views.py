@@ -1,6 +1,6 @@
 from django.contrib import messages
 from django.shortcuts import render, redirect
-from hierarchy.forms import DepartmentForm, FloorForm
+from hierarchy.forms import *
 
 def add_floor(request):
     if request.method == 'POST':
@@ -30,3 +30,18 @@ def add_department(request):
         form = DepartmentForm()
 
     return render(request, 'hierarchy/add_department.html', {'form': form})
+
+
+def add_position(request):
+    if request.method == 'POST':
+        form = PositionForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Cargo agregado correctamente.")
+            return redirect('hierarchy:add_position')  # Redirige después de guardar
+        else:
+            messages.error(request, "Hubo un error al agregar el cargo.")
+    else:
+        form = PositionForm()
+
+    return render(request, 'hierarchy/add_position.html', {'form': form})

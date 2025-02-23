@@ -11,8 +11,8 @@ from django.shortcuts import redirect, render
 from django.template import loader
 from django.urls import reverse
 
-from hierarchy.forms import FloorForm
-from hierarchy.models import Floor
+from hierarchy.forms import *
+from hierarchy.models import *
 
 
 @login_required(login_url="/login/")
@@ -58,3 +58,7 @@ def floors_list(request):
 def departments_list(request):
     departments = Department.objects.all()  # Obtener todos los departamentos
     return render(request, 'home/departments_list.html', {'departments': departments})
+
+def positions_list(request):
+    positions = Position.objects.all()  # Obtener todos los departamentos
+    return render(request, 'home/positions_list.html', {'positions': positions})

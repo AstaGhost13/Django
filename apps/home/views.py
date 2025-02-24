@@ -66,7 +66,7 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 def custodiams_list(request):
     custodiams_list = Custodiam.objects.all().order_by('last_name')  # Ordenar por apellido
-    paginator = Paginator(custodiams_list, 10)  # Mostrar 10 custodios por página
+    paginator = Paginator(custodiams_list, 4)  # Mostrar 10 custodios por página
 
     page_number = request.GET.get('page')  # Obtener el número de página de la URL
     try:

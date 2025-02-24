@@ -48,8 +48,7 @@ def pages(request):
         html_template = loader.get_template('home/page-500.html')
         return HttpResponse(html_template.render(context, request))
     
-from django.shortcuts import render
-from hierarchy.models import *
+
 
 def floors_list(request):
     floors = Floor.objects.all()  # Obtener todos los pisos
@@ -63,6 +62,18 @@ def positions_list(request):
     positions = Position.objects.all()  # Obtener todos los departamentos
     return render(request, 'home/positions_list.html', {'positions': positions})
 
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+
 def custodiams_list(request):
-    custodiams = Custodiam.objects.all()  # Obtener todos los departamentos
+    custodiams_list = Custodiam.objects.all().order_by('last_name')  # Ordenar por apellido
+    paginator = Paginator(custodiams_list, 10)  # Mostrar 10 custodios por página
+
+    page_number = request.GET.get('page')  # Obtener el número de página de la URL
+    try:
+        custodiams = paginator.page(page_number)
+    except PageNotAnInteger:
+        custodiams = paginator.page(1)  # Si el parámetro no es un número, mostrar la primera página
+    except EmptyPage:
+        custodiams = paginator.page(paginator.num_pages)  # Si la página está fuera de rango, mostrar la última página
+
     return render(request, 'home/custodiams_list.html', {'custodiams': custodiams})

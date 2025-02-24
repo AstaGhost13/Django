@@ -34,10 +34,11 @@
                         {% csrf_token %}
                         {{ form.as_p }}  <!-- Renderiza el formulario dinámicamente -->
                         <button type="submit" class="btn btn-primary">Guardar</button>
+                        <!-- Botón para redirigir a la lista de custodios -->
+                    <a href="{% url 'home:custodiams_list' %}" class="btn btn-secondary">Ver Custodios</a>
                     </form>
 
-                    <!-- Botón para redirigir a la lista de custodios -->
-                    <a href="{% url 'home:custodiams_list' %}" class="btn btn-secondary">Ver Custodios</a>
+                    
 
                 </div>   
                    

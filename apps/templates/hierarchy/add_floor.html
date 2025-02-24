@@ -29,13 +29,15 @@
                         </div>
                     {% endif %}
 
-                    <form method="POST" action="{% url 'hierarchy:add_floor' %}">
+                    <form method="POST" action="{% url 'hierarchy:add_floor' %}" class="me-2">
                         {% csrf_token %}
                         {{ form.as_p }}  <!-- Renderiza el formulario dinámicamente -->
-                        <button type="submit" class="btn btn-primary">Guardar</button>
+                        <button type="submit" class="btn btn-primary me-2">Guardar</button>
+                        <a href="{% url 'home:floors_list' %}#" class="btn btn-secondary">Ver Pisos</a>
                     </form>
+
                     <!-- Botón para redirigir a la lista de pisos -->
-                    <a href="{% url 'home:floors_list' %}#" class="btn btn-secondary">Ver Pisos</a>
+                    
                 </div>
             </div>
         </div>

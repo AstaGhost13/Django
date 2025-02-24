@@ -34,10 +34,11 @@
                         {% csrf_token %}
                         {{ form.as_p }}  <!-- Renderiza el formulario dinámicamente -->
                         <button type="submit" class="btn btn-primary">Guardar</button>
+                        <!-- Botón para redirigir a la lista de cargos -->
+                    <a href="{% url 'home:positions_list' %}" class="btn btn-secondary">Ver Cargos</a>
                     </form>
 
-                    <!-- Botón para redirigir a la lista de cargos -->
-                    <a href="{% url 'home:positions_list' %}" class="btn btn-secondary">Ver Cargos</a>
+                    
 
                 </div>   
                    

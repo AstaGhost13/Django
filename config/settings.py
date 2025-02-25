@@ -20,15 +20,17 @@ CORE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-k1q9kg5by*exc)if$(qx=8tg&c(_7!j9c4$g7e3k!e0a!itogy'
+SECRET_KEY = os.environ.get('SECRET_KEY', default = 'django-insecure-k1q9kg5by*exc)if$(qx=8tg&c(_7!j9c4$g7e3k!e0a!itogy')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-CSRF_TRUSTED_ORIGINS = [
-    'https://django-elu7.onrender.com'
-]
+
+DEBUG = 'RENDER' not in os.environ
 
 ALLOWED_HOSTS = ['django-elu7.onrender.com', '127.0.0.1', 'localhost']
+
+RENDER_EXTERNAL_HOSTNAME = os.environ.get('RENDER_EXTERNAL_HOSTNAME')
+if RENDER_EXTERNAL_HOSTNAME: 
+    ALLOWED_HOSTS.append(RENDER_EXTERNAL_HOSTNAME)
 
 
 # Application definition
@@ -55,6 +57,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware'
 ]
 
 ROOT_URLCONF = 'config.urls'
@@ -130,6 +133,9 @@ USE_TZ = True
 
 
 STATIC_URL = 'static/'
+if not DEBUG:
+    STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+    STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "apps/static"),

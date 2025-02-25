@@ -22,6 +22,8 @@
           <h3 class="mb-0">Departamentos Registrados</h3>
         </div>
         <div class="card-body">
+
+
           <!-- Mostrar mensajes de Django -->
           {% if messages %}
             <div class="container mt-3">
@@ -79,10 +81,58 @@
               {% endfor %}
             </div>
           </div>
+
+          <!-- Paginación -->
+          <div class="d-flex justify-content-center">
+            <nav aria-label="Page navigation example">
+              <ul class="pagination">
+                {% if departments.has_previous %}
+                  <li class="page-item">
+                    <a class="page-link" href="?page={{ departments.previous_page_number }}" tabindex="-1">
+                      <i class="fa fa-angle-left"></i>
+                      <span class="sr-only">Anterior</span>
+                    </a>
+                  </li>
+                {% else %}
+                  <li class="page-item disabled">
+                    <a class="page-link" href="#" tabindex="-1">
+                      <i class="fa fa-angle-left"></i>
+                      <span class="sr-only">Anterior</span>
+                    </a>
+                  </li>
+                {% endif %}
+
+                {% for num in departments.paginator.page_range %}
+                  {% if departments.number == num %}
+                    <li class="page-item active"><a class="page-link" href="#">{{ num }}</a></li>
+                  {% else %}
+                    <li class="page-item"><a class="page-link" href="?page={{ num }}">{{ num }}</a></li>
+                  {% endif %}
+                {% endfor %}
+
+                {% if departments.has_next %}
+                  <li class="page-item">
+                    <a class="page-link" href="?page={{ departments.next_page_number }}">
+                      <i class="fa fa-angle-right"></i>
+                      <span class="sr-only">Siguiente</span>
+                    </a>
+                  </li>
+                {% else %}
+                  <li class="page-item disabled">
+                    <a class="page-link" href="#">
+                      <i class="fa fa-angle-right"></i>
+                      <span class="sr-only">Siguiente</span>
+                    </a>
+                  </li>
+                {% endif %}
+              </ul>
+            </nav>
+          </div>
         </div>
       </div>
     </div>
   </div>
+
 
   <!-- Footer -->
   {% include "includes/footer.html" %}

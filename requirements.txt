@@ -1,2 +1,8 @@
-Django
-django-currentuser
+asgiref==3.8.1
+Django==5.1.6
+django-currentuser==0.8.0
+gunicorn==23.0.0
+packaging==24.2
+sqlparse==0.5.3
+tzdata==2025.1
+whitenoise==6.9.0

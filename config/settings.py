@@ -23,7 +23,7 @@ CORE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = 'django-insecure-k1q9kg5by*exc)if$(qx=8tg&c(_7!j9c4$g7e3k!e0a!itogy'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 CSRF_TRUSTED_ORIGINS = [
     'https://django-elu7.onrender.com'
 ]

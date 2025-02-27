@@ -23,7 +23,7 @@ CORE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = os.environ.get('SECRET_KEY', default = 'django-insecure-k1q9kg5by*exc)if$(qx=8tg&c(_7!j9c4$g7e3k!e0a!itogy')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-
+# DEBUG = 'RENDER' not in os.environ
 DEBUG = False
 
 ALLOWED_HOSTS = ['django-elu7.onrender.com', '127.0.0.1', 'localhost']
@@ -135,7 +135,7 @@ USE_TZ = True
 
 
 
-STATIC_URL = 'static/'
+STATIC_URL = '/static/'
 if not DEBUG:
     STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
     STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'

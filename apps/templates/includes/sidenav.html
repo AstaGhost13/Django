@@ -1,7 +1,7 @@
-<nav class="sidenav navbar navbar-vertical  fixed-left  navbar-expand-xs navbar-light bg-white" id="sidenav-main">
+<nav class="sidenav navbar navbar-vertical fixed-left navbar-expand-xs navbar-light bg-white" id="sidenav-main">
   <div class="scrollbar-inner">
     <!-- Brand -->
-    <div class="sidenav-header  align-items-center">
+    <div class="sidenav-header align-items-center">
       <a class="navbar-brand" href="/">
         <img src="/static/assets/img/brand/blue.png" class="navbar-brand-img" alt="Argon Design - Jinja Template Logo.">
       </a>
@@ -11,78 +11,171 @@
       <div class="collapse navbar-collapse" id="sidenav-collapse-main">
         <!-- Nav items -->
         <ul class="navbar-nav">
+          <!-- Dashboard -->
           <li class="nav-item">
             <a class="nav-link {% if 'index' in segment %} active {% endif %}" href="/">
               <i class="ni ni-tv-2 text-primary"></i>
               <span class="nav-link-text">Dashboard</span>
             </a>
           </li>
+
+          <!-- Bloque 1: Estructura Organizacional -->
           <li class="nav-item">
-            <a class="nav-link {% if 'icons' in segment %} active {% endif %}" href="/icons.html">
-              <i class="ni ni-planet text-orange"></i>
-              <span class="nav-link-text">Icons</span>
+            <a class="nav-link" data-toggle="collapse" href="#organizacional" aria-expanded="true">
+              <i class="ni ni-briefcase-24 text-info"></i>
+              <span class="nav-link-text">Estructura Organizacional</span>
             </a>
-          </li>
-         
-          <li class="nav-item">
-            <a class="nav-link" href="{% url 'hierarchy:add_floor' %}">
-              <i class="ni ni-planet text-orange"></i>
-              <span class="nav-link-text">Agregar Piso</span>
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="{% url 'hierarchy:add_department' %}">
-              <i class="ni ni-pin-3 text-primary"></i>
-              <span class="nav-link-text">Departamento</span>
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="{% url 'hierarchy:add_position' %}">
-              <i class="ni ni-pin-3 text-primary"></i>
-              <span class="nav-link-text">Cargo</span>
-            </a>
+            <div class="collapse show" id="organizacional" data-parent="#sidenav-collapse-main">
+              <ul class="nav nav-sm flex-column">
+                <li class="nav-item">
+                  <a class="nav-link" href="{% url 'hierarchy:add_floor' %}">
+                    <i class="ni ni-building text-orange"></i>
+                    <span class="nav-link-text">Piso</span>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="{% url 'hierarchy:add_department' %}">
+                    <i class="ni ni-world-2 text-primary"></i>
+                    <span class="nav-link-text">Departamento</span>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="{% url 'hierarchy:add_position' %}">
+                    <i class="ni ni-paper-diploma text-primary"></i>
+                    <span class="nav-link-text">Cargo</span>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="{% url 'hierarchy:add_custodiam' %}">
+                    <i class="ni ni-badge text-primary"></i>
+                    <span class="nav-link-text">Custodio</span>
+                  </a>
+                </li>
+              </ul>
+            </div>
           </li>
 
+          <!-- Bloque 2: Gestión de Productos -->
           <li class="nav-item">
-            <a class="nav-link" href="{% url 'hierarchy:add_custodiam' %}">
-              <i class="ni ni-pin-3 text-primary"></i>
-              <span class="nav-link-text">Custodio</span>
+            <a class="nav-link" data-toggle="collapse" href="#gestion-productos" aria-expanded="true">
+              <i class="ni ni-box-2 text-success"></i>
+              <span class="nav-link-text">Gestión de Productos</span>
             </a>
+            <div class="collapse show" id="gestion-productos" data-parent="#sidenav-collapse-main">
+              <ul class="nav nav-sm flex-column">
+                <li class="nav-item">
+                  <a class="nav-link" href="#">
+                    <i class="ni ni-archive-2 text-orange"></i>
+                    <span class="nav-link-text">Asignación de Producto</span>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="#">
+                    <i class="ni ni-tag text-primary"></i>
+                    <span class="nav-link-text">Marca</span>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="#">
+                    <i class="ni ni-tv-2 text-primary"></i>
+                    <span class="nav-link-text">Modelos de Producto</span>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="#">
+                    <i class="ni ni-bag-17 text-primary"></i>
+                    <span class="nav-link-text">Producto</span>
+                  </a>
+                </li>
+              </ul>
+            </div>
           </li>
+
+          <!-- Bloque 3: Recursos Tecnológicos -->
+          <li class="nav-item">
+            <a class="nav-link" data-toggle="collapse" href="#recursos-tecnologicos" aria-expanded="true">
+              <i class="ni ni-laptop text-warning"></i>
+              <span class="nav-link-text">Recursos Tecnológicos</span>
+            </a>
+            <div class="collapse show" id="recursos-tecnologicos" data-parent="#sidenav-collapse-main">
+              <ul class="nav nav-sm flex-column">
+                <li class="nav-item">
+                  <a class="nav-link" href="#">
+                    <i class="ni ni-tablet-button text-orange"></i>
+                    <span class="nav-link-text">Hardware</span>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="#">
+                    <i class="ni ni-chart-bar-32 text-primary"></i>
+                    <span class="nav-link-text">Software</span>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="#">
+                    <i class="ni ni-laptop text-primary"></i>
+                    <span class="nav-link-text">Display Name</span>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="#">
+                    <i class="ni ni-calendar-grid-58 text-primary"></i>
+                    <span class="nav-link-text">Fecha de Operación</span>
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </li>
+
+          <!-- Bloque 4: Redes y Direcciones IP -->
+          <li class="nav-item">
+            <a class="nav-link" data-toggle="collapse" href="#redes-ip" aria-expanded="true">
+              <i class="ni ni-world text-danger"></i>
+              <span class="nav-link-text">Redes y Direcciones IP</span>
+            </a>
+            <div class="collapse show" id="redes-ip" data-parent="#sidenav-collapse-main">
+              <ul class="nav nav-sm flex-column">
+                <li class="nav-item">
+                  <a class="nav-link" href="#">
+                    <i class="ni ni-pin-3 text-primary"></i>
+                    <span class="nav-link-text">Asignación de IP</span>
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </li>
+
+          <!-- Profile -->
           <li class="nav-item">
             <a class="nav-link {% if 'profile' in segment %} active {% endif %}" href="/profile.html">
               <i class="ni ni-single-02 text-yellow"></i>
               <span class="nav-link-text">Profile</span>
             </a>
           </li>
+
+          <!-- Tables -->
           <li class="nav-item">
             <a class="nav-link {% if 'tables' in segment %} active {% endif %}" href="/tables.html">
               <i class="ni ni-bullet-list-67 text-default"></i>
               <span class="nav-link-text">Tables</span>
             </a>
           </li>
-                   
         </ul>
+
         <!-- Divider -->
         <hr class="my-3">
-        <!-- Heading -->
+
+        <!-- Resources Section -->
         <h6 class="navbar-heading p-0 text-muted">
           <span class="docs-normal">Resources</span>
         </h6>
-        <!-- Navigation -->
         <ul class="navbar-nav mb-md-3">
-
           <li class="nav-item">
-            <a class="nav-link" 
-               target="_blank" 
-               href="#">
+            <a class="nav-link" target="_blank" href="#">
               <i class="ni ni-archive-2"></i>
-              <span class="nav-link-text">Prueba </span>
+              <span class="nav-link-text">Prueba</span>
             </a>
           </li>
-
-       
-          
         </ul>
       </div>
     </div>

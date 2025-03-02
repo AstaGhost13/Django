@@ -47,7 +47,7 @@ class PositionForm(forms.ModelForm):
 class CustodiamForm(forms.ModelForm):
     class Meta:
         model = Custodiam
-        fields = ['status', 'first_name', 'last_name', 'phone_number', 'address', 'reference', 'email', 'position']
+        fields = ['first_name', 'last_name', 'phone_number', 'address', 'reference', 'email', 'position']
         widgets = {
             'first_name': forms.TextInput(attrs={
                 'class': 'form-control',

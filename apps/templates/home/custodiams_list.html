@@ -18,17 +18,19 @@
   <div class="row">
     <div class="col">
       <div class="card shadow">
-        <div class="card-header bg-transparent">
+        <div class="card-header bg-transparent d-flex justify-content-between align-items-center">
           <h3 class="mb-0">Custodios Registrados</h3>
+          <button type="button" class="btn btn-success" data-toggle="modal" data-target="#addCustodiamModal">
+            Agregar Custodio
+        </button>
         </div>
-        <div class="card-body">
 
-          <!-- Busqueda-->
+          <!-- Busqueda -->
           <form method="GET" action="" class="mb-4">
-            <div class="row">
-              <div class="col-md-6">
+            <div class="row justify-content-center"> <!-- Centrar la fila -->
+              <div class="col-md-6"> <!-- Ajustar el ancho de la barra de búsqueda -->
                 <div class="form-group">
-                  <div class="input-group mb-4">
+                  <div class="input-group">
                     <div class="input-group-prepend">
                       <span class="input-group-text"><i class="ni ni-zoom-split-in"></i></span>
                     </div>
@@ -36,7 +38,7 @@
                   </div>
                 </div>
               </div>
-              <div class="col-md-3">
+              <div class="col-md-2 text-center"> <!-- Ajustar el ancho del botón y centrar el texto -->
                 <button type="submit" class="btn btn-primary">Buscar</button>
               </div>
             </div>
@@ -56,69 +58,78 @@
           <!-- Lista de custodios -->
           <div class="container">
             <div class="row">
-              {% for custodiam in custodiams %}
-                <div class="col-md-6">
-                  <div class="card mb-3">
-                    <div class="card-body">
-                      <h5 class="card-title">{{ custodiam.first_name }} {{ custodiam.last_name }}</h5>
-                      <p class="card-text">
-                        <strong>Cargo:</strong>
-                        {% if custodiam.position %}
-                          {{ custodiam.position.description }}
-                        {% else %}
-                          <span class="text-muted">Sin cargo asignado</span>
-                        {% endif %}
-                      </p>
-                      <p class="card-text">
-                        <strong>Teléfono:</strong>
-                        {% if custodiam.phone_number %}
-                          {{ custodiam.phone_number }}
-                        {% else %}
-                          <span class="text-muted">Sin teléfono</span>
-                        {% endif %}
-                      </p>
-                      <p class="card-text">
-                        <strong>Dirección:</strong>
-                        {% if custodiam.address %}
-                          {{ custodiam.address }}
-                        {% else %}
-                          <span class="text-muted">Sin dirección</span>
-                        {% endif %}
-                      </p>
-                      <p class="card-text">
-                        <strong>Referencia:</strong>
-                        {% if custodiam.reference %}
-                          {{ custodiam.reference }}
-                        {% else %}
-                          <span class="text-muted">Sin referencia</span>
-                        {% endif %}
-                      </p>
-                      <p class="card-text">
-                        <strong>Correo electrónico:</strong>
-                        {{ custodiam.email }}
-                      </p>
-                      <p class="card-text">
-                        <strong>Estado:</strong>
-                        {% if custodiam.status %}
-                          <span class="text-success">Activo</span>
-                        {% else %}
-                          <span class="text-danger">Inactivo</span>
-                        {% endif %}
-                      </p>
-                      <p class="card-text">
-                        <small class="text-muted">Creado el: {{ custodiam.created_at|date:"d/m/Y H:i" }}</small>
-                      </p>
-                      <a href="#" class="btn btn-primary">Editar</a>
-                      <a href="#" class="btn btn-danger">Eliminar</a>
+              {% if custodiams %}
+                {% for custodiam in custodiams %}
+                  <div class="col-md-6">
+                    <div class="card mb-3">
+                      <div class="card-body">
+                        <h5 class="card-title">{{ custodiam.first_name }} {{ custodiam.last_name }}</h5>
+                        <p class="card-text">
+                          <strong>Cargo:</strong>
+                          {% if custodiam.position %}
+                            {{ custodiam.position.description }}
+                          {% else %}
+                            <span class="text-muted">Sin cargo asignado</span>
+                          {% endif %}
+                        </p>
+                        <p class="card-text">
+                          <strong>Teléfono:</strong>
+                          {% if custodiam.phone_number %}
+                            {{ custodiam.phone_number }}
+                          {% else %}
+                            <span class="text-muted">Sin teléfono</span>
+                          {% endif %}
+                        </p>
+                        <p class="card-text">
+                          <strong>Dirección:</strong>
+                          {% if custodiam.address %}
+                            {{ custodiam.address }}
+                          {% else %}
+                            <span class="text-muted">Sin dirección</span>
+                          {% endif %}
+                        </p>
+                        <p class="card-text">
+                          <strong>Referencia:</strong>
+                          {% if custodiam.reference %}
+                            {{ custodiam.reference }}
+                          {% else %}
+                            <span class="text-muted">Sin referencia</span>
+                          {% endif %}
+                        </p>
+                        <p class="card-text">
+                          <strong>Correo electrónico:</strong>
+                          {{ custodiam.email }}
+                        </p>
+                        <p class="card-text">
+                          <strong>Estado:</strong>
+                          {% if custodiam.status %}
+                            <span class="text-success">Activo</span>
+                          {% else %}
+                            <span class="text-danger">Inactivo</span>
+                          {% endif %}
+                        </p>
+                        <p class="card-text">
+                          <small class="text-muted">Creado el: {{ custodiam.created_at|date:"d/m/Y H:i" }}</small>
+                        </p>
+                        <a href="#" class="btn btn-primary">Editar</a>
+                        <a href="#" class="btn btn-danger">Eliminar</a>
+                      </div>
                     </div>
                   </div>
+                  {% if forloop.counter|divisibleby:2 and not forloop.last %}
+                    <div class="w-100"></div>
+                  {% endif %}
+                {% endfor %}
+              {% else %}
+                <div class="col-12 text-center">
+                  <div class="alert alert-info" role="alert">
+                    No se encontraron coincidencias.
+                  </div>
                 </div>
-                {% if forloop.counter|divisibleby:2 and not forloop.last %}
-                  <div class="w-100"></div>
-                {% endif %}
-              {% endfor %}
+              {% endif %}
             </div>
           </div>
+          
           <!--Paginacion-->
           <nav aria-label="Page navigation example">
             <ul class="pagination justify-content-center">
@@ -168,8 +179,33 @@
     </div>
   </div>
 
+  <!-- Modal para agregar nuevo custodio -->
+  <div class="modal fade" id="addCustodiamModal" tabindex="-1" role="dialog" aria-labelledby="custodiamModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg-secondary shadow border-0">
+                <h5 class="modal-title" id="custodiamModalLabel">Formulario de Custodio</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body px-lg-5 py-lg-5">
+                <form method="POST" action="{% url 'hierarchy:add_custodiam' %}">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        {{ form.as_p }}
+                    </div>
+                    <div class="text-center">
+                        <button type="submit" class="btn btn-primary">Guardar</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
   <!-- Footer -->
   {% include "includes/footer.html" %}
 </div>
-
 {% endblock content %}

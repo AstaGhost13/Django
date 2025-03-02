@@ -1,4 +1,5 @@
 from django.contrib import messages
+from django.http import JsonResponse
 from django.shortcuts import render, redirect
 from hierarchy.forms import *
 
@@ -60,6 +61,5 @@ def add_custodiam(request):
         form = CustodiamForm()
 
     return render(request, 'hierarchy/add_custodiam.html', {'form': form})
-
 
 

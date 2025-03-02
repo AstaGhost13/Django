@@ -102,8 +102,19 @@ def custodiams_list(request):
     try:
         custodiams = paginator.page(page_number)
     except PageNotAnInteger:
-        custodiams = paginator.page(1)
+        custodiams = paginator.page(1)  # Página por defecto si no es un número entero
     except EmptyPage:
-        custodiams = paginator.page(paginator.num_pages)
+        custodiams = paginator.page(paginator.num_pages)  # Última página si la página solicitada está vacía
 
     return render(request, 'home/custodiams_list.html', {'custodiams': custodiams, 'query': query})
+
+def add_custodiam_modal(request):
+    if request.method == "POST":
+        form = CustodiamForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('home:custodiams_list')
+    else:
+        form = CustodiamForm()
+
+    return render(request, 'hierarchy/add_custodiam_modal.html', {'form': form})

@@ -128,7 +128,37 @@
                         <a href="{% url 'hierarchy:edit_custodian' custodiam.id %}" class="btn btn-primary">Editar</a>
                         <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#modal-delete-{{ custodiam.id }}">
                           Eliminar
-                      </button>
+                        </button>
+                        
+                        <!-- Modal -->
+                        <div class="modal fade" id="modal-delete-{{ custodiam.id }}" tabindex="-1" role="dialog" aria-labelledby="modal-delete-{{ custodiam.id }}" aria-hidden="true">
+                          <div class="modal-dialog modal-danger modal-dialog-centered" role="document">
+                            <div class="modal-content bg-gradient-danger">
+                              <div class="modal-header">
+                                <h5 class="modal-title" id="modal-title-notification">Confirmar desactivación</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                  <span aria-hidden="true">×</span>
+                                </button>
+                              </div>
+                              <div class="modal-body">
+                                <div class="py-3 text-center">
+                                  <i class="ni ni-bell-55 ni-3x"></i>
+                                  <h4 class="heading mt-4">¿Estás seguro de que quieres desactivar este custodio?</h4>
+                                  <p>El custodio ya no aparecerá en la lista de custodios activos.</p>
+                                </div>
+                              </div>
+                              <div class="modal-footer">
+                                <!-- Botón que envía la solicitud para cambiar el status -->
+                                <form method="POST" action="{% url 'hierarchy:delete_custodian' custodiam.id %}">
+                                  {% csrf_token %}
+                                  <button type="submit" class="btn btn-white">Sí, desactivar</button>
+                                </form>
+                                <button type="button" class="btn btn-link text-white ml-auto" data-dismiss="modal">Cerrar</button>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        
                       </div>
                     </div>
                   </div>

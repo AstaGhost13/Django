@@ -4,64 +4,156 @@
 <!-- Header -->
 <div class="header bg-gradient-primary pb-8 pt-5 pt-md-8">
     <div class="container-fluid">
-      <div class="header-body">
-        <h1 class="text-white">Editar Custodio</h1>
-      </div>
+        <div class="header-body">
+            <h1 class="text-white">Editar Custodio</h1>
+        </div>
     </div>
 </div>
 
 <div class="container-fluid mt--7">
-  <div class="row">
-    <div class="col">
-      <div class="card shadow">
-        <div class="card-header bg-transparent d-flex justify-content-between align-items-center">
-          <h3 class="mb-0">Detalles del Custodio</h3>
+    <div class="row">
+        <div class="col">
+            <div class="card shadow">
+                <div class="card-header bg-transparent d-flex justify-content-between align-items-center">
+                    <h3 class="mb-0">Detalles del Custodio</h3>
+                </div>
+                <!-- Formulario de Edición -->
+                <form method="POST">
+                    {% csrf_token %}
+                    <div class="card-body">
+                        <div class="row">
+                            <!-- Campo Nombre -->
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="first_name">Nombre</label>
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text"><i class="fas fa-user"></i></span>
+                                        </div>
+                                        <input type="text" class="form-control" id="first_name" name="first_name" value="{{ custodiam.first_name }}">
+                                    </div>
+                                    {% for error in form.first_name.errors %}
+                                    <small class="form-text text-danger">{{ error }}</small>
+                                    {% endfor %}
+                                </div>
+                            </div>
+
+                            <!-- Campo Apellido -->
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="last_name">Apellido</label>
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text"><i class="fas fa-user"></i></span>
+                                        </div>
+                                        <input type="text" class="form-control" id="last_name" name="last_name" value="{{ custodiam.last_name }}">
+                                    </div>
+                                    {% for error in form.last_name.errors %}
+                                    <small class="form-text text-danger">{{ error }}</small>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <!-- Campo Teléfono -->
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="phone_number">Teléfono</label>
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text"><i class="fas fa-phone-alt"></i></span>
+                                        </div>
+                                        <input type="text" class="form-control" id="phone_number" name="phone_number" value="{{ custodiam.phone_number }}">
+                                    </div>
+                                    {% for error in form.phone_number.errors %}
+                                    <small class="form-text text-danger">{{ error }}</small>
+                                    {% endfor %}
+                                </div>
+                            </div>
+
+                            <!-- Campo Dirección -->
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="address">Dirección</label>
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text"><i class="fas fa-map-marker-alt"></i></span>
+                                        </div>
+                                        <input type="text" class="form-control" id="address" name="address" value="{{ custodiam.address }}">
+                                    </div>
+                                    {% for error in form.address.errors %}
+                                    <small class="form-text text-danger">{{ error }}</small>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Campo Referencia -->
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="reference">Referencia</label>
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text"><i class="fas fa-map-signs"></i></span>
+                                        </div>
+                                        <input type="text" class="form-control" id="reference" name="reference" value="{{ custodiam.reference }}">
+                                    </div>
+                                    {% for error in form.reference.errors %}
+                                    <small class="form-text text-danger">{{ error }}</small>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <!-- Campo Correo Electrónico -->
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="email">Correo Electrónico</label>
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text"><i class="fas fa-envelope"></i></span>
+                                        </div>
+                                        <input type="email" class="form-control" id="email" name="email" value="{{ custodiam.email }}">
+                                    </div>
+                                    {% for error in form.email.errors %}
+                                    <small class="form-text text-danger">{{ error }}</small>
+                                    {% endfor %}
+                                </div>
+                            </div>
+
+                            <!-- Campo Cargo -->
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="position">Cargo</label>
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text"><i class="fas fa-briefcase"></i></span>
+                                        </div>
+                                        <select class="form-control" id="position" name="position">
+                                            {% for position in positions %}
+                                            <option value="{{ position.id }}" {% if custodiam.position == position %}selected{% endif %}>{{ position.description }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                    {% for error in form.position.errors %}
+                                    <small class="form-text text-danger">{{ error }}</small>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card-footer text-center">
+                        <button type="submit" class="btn btn-primary">Guardar cambios</button>
+                        <a href="{% url 'home:custodiams_list' %}" class="btn btn-secondary">Cancelar</a>
+                    </div>
+                </form>
+            </div>
         </div>
-        <!-- Formulario de Edición -->
-        <form method="POST">
-          {% csrf_token %}
-          <div class="card-body">
-            <div class="mb-3">
-              <label for="first_name" class="form-label">Nombre</label>
-              <input type="text" class="form-control" id="first_name" name="first_name" value="{{ custodiam.first_name }}">
-            </div>
-            <div class="mb-3">
-              <label for="last_name" class="form-label">Apellido</label>
-              <input type="text" class="form-control" id="last_name" name="last_name" value="{{ custodiam.last_name }}">
-            </div>
-            <div class="mb-3">
-              <label for="phone_number" class="form-label">Teléfono</label>
-              <input type="text" class="form-control" id="phone_number" name="phone_number" value="{{ custodiam.phone_number }}">
-            </div>
-            <div class="mb-3">
-              <label for="address" class="form-label">Dirección</label>
-              <input type="text" class="form-control" id="address" name="address" value="{{ custodiam.address }}">
-            </div>
-            <div class="mb-3">
-              <label for="reference" class="form-label">Referencia</label>
-              <input type="text" class="form-control" id="reference" name="reference" value="{{ custodiam.reference }}">
-            </div>
-            <div class="mb-3">
-              <label for="email" class="form-label">Correo Electrónico</label>
-              <input type="email" class="form-control" id="email" name="email" value="{{ custodiam.email }}">
-            </div>
-            <div class="mb-3">
-              <label for="position" class="form-label">Cargo</label>
-              <select class="form-control" id="position" name="position">
-                {% for position in positions %}
-                <option value="{{ position.id }}" {% if custodiam.position == position %}selected{% endif %}>{{ position.description }}</option>
-            {% endfor %}
-              </select>
-            </div>
-          </div>
-          <div class="card-footer text-center">
-            <button type="submit" class="btn btn-primary">Guardar cambios</button>
-            <a href="{% url 'home:custodiams_list' %}" class="btn btn-secondary">Cancelar</a>
-          </div>
-        </form>
-      </div>
     </div>
-  </div>
 </div>
 
 {% endblock %}

@@ -1,6 +1,7 @@
 from django.contrib import messages
-from django.http import JsonResponse
-from django.shortcuts import render, redirect
+from django.http import HttpResponseRedirect, JsonResponse
+from django.shortcuts import get_object_or_404, render, redirect
+from django.urls import reverse
 from hierarchy.forms import *
 
 def add_floor(request):
@@ -62,4 +63,47 @@ def add_custodiam(request):
 
     return render(request, 'hierarchy/add_custodiam.html', {'form': form})
 
+def edit_custodiam(request, pk):
+    custodiam = get_object_or_404(Custodiam, id=pk)  # Usamos el campo `id` que es UUID
+    positions = Position.objects.all()  
 
+    if request.method == 'POST':
+        # Obtener los datos del formulario
+        custodiam.first_name = request.POST.get('first_name')
+        custodiam.last_name = request.POST.get('last_name')
+        custodiam.phone_number = request.POST.get('phone_number')
+        custodiam.address = request.POST.get('address')
+        custodiam.reference = request.POST.get('reference')
+        custodiam.email = request.POST.get('email')
+
+        # Asegurarse de que la posición esté correctamente asignada
+        position_id = request.POST.get('position')
+        if position_id:
+            custodiam.position = get_object_or_404(Position, id=position_id)
+        else:
+            custodiam.position = None  # Si no se selecciona ninguna posición
+
+        # Guardar el objeto
+        try:
+            custodiam.save()
+            messages.success(request, "Custodio actualizado correctamente.")
+            return redirect('home:custodiams_list')
+        except Exception as e:
+            messages.error(request, f"Error al guardar el custodio: {e}")
+
+    return render(request, 'hierarchy/edit_custodian.html', {'custodiam': custodiam, 'positions': positions})
+
+def delete_custodian(request, pk):
+    custodiam = get_object_or_404(Custodiam, id=pk)
+    
+    if request.method == "POST":
+        try:
+            custodiam.status = False  # Cambiar el estado a inactivo
+            custodiam.save()  # Guardar el objeto
+            messages.success(request, "El custodio ha sido desactivado correctamente.")
+        except Exception as e:
+            messages.error(request, f"Error al desactivar el custodio: {e}")
+        
+        return redirect('home:custodiams_list')  # Redirigir a la lista de custodios
+    
+    return render(request, 'hierarchy/delete_custodian.html', {'custodiam': custodiam})

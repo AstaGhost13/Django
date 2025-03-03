@@ -105,7 +105,7 @@ class Custodiam(models.Model):
         self.phone_number = self.phone_number.upper() if self.phone_number else None
         self.address = self.address.upper() if self.address else None
         self.reference = self.reference.upper() if self.reference else None
-        self.email = self.email.upper()
+        self.email = self.email.lower()
         super().save(*args, **kwargs)
     
     class Meta:

@@ -13,7 +13,6 @@ urlpatterns = [
     path('departments/', views.departments_list, name='departments_list'),
     path('positions/', views.positions_list, name='positions_list'),
     path('custodiams/', views.custodiams_list, name='custodiams_list'),
-    path('add-custodiam-modal/', views.add_custodiam_modal, name='add_custodiam_modal'),
     
     # Coloca la expresión regular al final para evitar conflictos
     re_path(r'^.*\.*', views.pages, name='pages'),

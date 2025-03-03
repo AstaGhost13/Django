@@ -7,7 +7,7 @@ from pyexpat.errors import messages
 from django import template
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, HttpResponseRedirect
-from django.shortcuts import redirect, render
+from django.shortcuts import get_object_or_404, redirect, render
 from django.template import loader
 from django.db.models import Q
 from django.urls import reverse
@@ -89,8 +89,9 @@ def positions_list(request):
 
 def custodiams_list(request):
     query = request.GET.get('q', '')  # Obtener el término de búsqueda
-    custodiams_list = Custodiam.objects.all().order_by('last_name')
 
+    custodiams_list = Custodiam.objects.filter(status="True").order_by('last_name')
+    
     if query:
         custodiams_list = custodiams_list.filter(
             first_name__icontains=query
@@ -108,13 +109,3 @@ def custodiams_list(request):
 
     return render(request, 'home/custodiams_list.html', {'custodiams': custodiams, 'query': query})
 
-def add_custodiam_modal(request):
-    if request.method == "POST":
-        form = CustodiamForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return redirect('home:custodiams_list')
-    else:
-        form = CustodiamForm()
-
-    return render(request, 'hierarchy/add_custodiam_modal.html', {'form': form})

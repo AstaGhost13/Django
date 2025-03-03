@@ -26,6 +26,27 @@
         </a>
         </div>
 
+        <!-- Mostrar mensajes de Django -->
+        <div class="container mt-3" style="min-height: 50px;"> 
+          {% if messages %}
+            {% for message in messages %}
+              <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                {{ message }}
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+            {% endfor %}
+
+            <script>
+              // Ocultar el mensaje después de 3 segundos
+              setTimeout(function() {
+                $(".alert").alert('close');
+              }, 3000);
+            </script>
+          {% endif %}
+        </div>
+
           <!-- Busqueda -->
           <form method="GET" action="" class="mb-4">
             <div class="row justify-content-center"> <!-- Centrar la fila -->
@@ -45,16 +66,8 @@
             </div>
           </form>
 
-          <!-- Mostrar mensajes de Django -->
-          {% if messages %}
-            <div class="container mt-3">
-              {% for message in messages %}
-                <div class="alert alert-{{ message.tags }}">
-                  {{ message }}
-                </div>
-              {% endfor %}
-            </div>
-          {% endif %}
+          
+            
 
           <!-- Lista de custodios -->
           <div class="container">
@@ -112,8 +125,10 @@
                         <p class="card-text">
                           <small class="text-muted">Creado el: {{ custodiam.created_at|date:"d/m/Y H:i" }}</small>
                         </p>
-                        <a href="#" class="btn btn-primary">Editar</a>
-                        <a href="#" class="btn btn-danger">Eliminar</a>
+                        <a href="{% url 'hierarchy:edit_custodian' custodiam.id %}" class="btn btn-primary">Editar</a>
+                        <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#modal-delete-{{ custodiam.id }}">
+                          Eliminar
+                      </button>
                       </div>
                     </div>
                   </div>

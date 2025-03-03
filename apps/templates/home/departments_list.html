@@ -18,11 +18,33 @@
   <div class="row">
     <div class="col">
       <div class="card shadow">
-        <div class="card-header bg-transparent">
+        <div class="card-header bg-transparent d-flex justify-content-between align-items-center">
           <h3 class="mb-0">Departamentos Registrados</h3>
+          <a href="{% url 'hierarchy:add_custodiam' %}" class="btn btn-success">
+            Agregar Departamento
+        </a>
         </div>
         <div class="card-body">
+    <!-- Mostrar mensajes de Django -->
+        <div class="container mt-3" style="min-height: 50px;"> 
+          {% if messages %}
+            {% for message in messages %}
+              <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                {{ message }}
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+            {% endfor %}
 
+            <script>
+              // Ocultar el mensaje después de 3 segundos
+              setTimeout(function() {
+                $(".alert").alert('close');
+              }, 3000);
+            </script>
+          {% endif %}
+        </div>
 
           <!-- Mostrar mensajes de Django -->
           {% if messages %}
@@ -35,54 +57,76 @@
             </div>
           {% endif %}
 
-          <!-- Lista de departamentos -->
-          <div class="container">
-            <div class="row">
-              {% for department in departments %}
-                <div class="col-md-6">
-                  <div class="card mb-3">
-                    <div class="card-body">
-                      <h5 class="card-title">{{ department.description }}</h5>
-                      <p class="card-text">
-                        <strong>Piso:</strong>
-                        {% if department.id_floor %}
-                          {{ department.id_floor.description }}
-                        {% else %}
-                          <span class="text-muted">Sin piso asignado</span>
-                        {% endif %}
-                      </p>
-                      <p class="card-text">
-                        <strong>Departamento Padre:</strong>
-                        {% if department.parent %}
-                          {{ department.parent.description }}
-                        {% else %}
-                          <span class="text-muted">Ninguno</span>
-                        {% endif %}
-                      </p>
-                      <p class="card-text">
-                        <strong>Estado:</strong>
-                        {% if department.status %}
-                          <span class="text-success">Activo</span>
-                        {% else %}
-                          <span class="text-danger">Inactivo</span>
-                        {% endif %}
-                      </p>
-                      <p class="card-text">
-                        <small class="text-muted">Creado el: {{ department.created_at|date:"d/m/Y H:i" }}</small>
-                      </p>
-                      <a href="#" class="btn btn-primary">Editar</a>
-                      <a href="#" class="btn btn-danger">Eliminar</a>
-                    </div>
-                  </div>
-                </div>
-                {% if forloop.counter|divisibleby:2 and not forloop.last %}
-                  <div class="w-100"></div>
-                {% endif %}
-              {% endfor %}
-            </div>
+          <!-- Tabla de departamentos -->
+          <div class="table-responsive">
+            <table class="table align-items-center table-dark">
+              <thead class="thead-dark">
+                <tr>
+                  <th scope="col">Descripción</th>
+                  <th scope="col">Piso</th>
+                  <th scope="col">Departamento Padre</th>
+                  <th scope="col">Estado</th>
+                  <th scope="col">Creado el</th>
+                  <th scope="col">Acciones</th>
+                </tr>
+              </thead>
+              <tbody class="list">
+                {% for department in departments %}
+                  <tr>
+                    <th scope="row" class="name">
+                      <div class="media align-items-center">
+                        <div class="media-body">
+                          <span class="mb-0 text-sm">{{ department.description }}</span>
+                        </div>
+                      </div>
+                    </th>
+                    <td class="budget">
+                      {% if department.id_floor %}
+                        {{ department.id_floor.description }}
+                      {% else %}
+                        <span class="text-muted">Sin piso asignado</span>
+                      {% endif %}
+                    </td>
+                    <td class="status">
+                      {% if department.parent %}
+                        {{ department.parent.description }}
+                      {% else %}
+                        <span class="text-muted">Ninguno</span>
+                      {% endif %}
+                    </td>
+                    <td class="completion">
+                      {% if department.status %}
+                        <span class="badge badge-dot mr-4">
+                          <i class="bg-success"></i> Activo
+                        </span>
+                      {% else %}
+                        <span class="badge badge-dot mr-4">
+                          <i class="bg-danger"></i> Inactivo
+                        </span>
+                      {% endif %}
+                    </td>
+                    <td class="text-right">
+                      <small class="text-muted">{{ department.created_at|date:"d/m/Y H:i" }}</small>
+                    </td>
+                    <td class="text-right">
+                      <div class="dropdown">
+                        <a class="btn btn-sm btn-icon-only text-light" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                          <i class="fas fa-ellipsis-v"></i>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
+                          <a class="dropdown-item" href="#">Editar</a>
+                          <a class="dropdown-item" href="#">Eliminar</a>
+                        </div>
+                      </div>
+                    </td>
+                  </tr>
+                {% endfor %}
+              </tbody>
+            </table>
           </div>
 
-          <!-- Paginación -->
+
+          <!-- Paginación 
           <div class="d-flex justify-content-center">
             <nav aria-label="Page navigation example">
               <ul class="pagination">
@@ -127,7 +171,8 @@
                 {% endif %}
               </ul>
             </nav>
-          </div>
+          </div>-->
+
         </div>
       </div>
     </div>

@@ -87,18 +87,29 @@ def positions_list(request):
 
 
 
+
 def custodiams_list(request):
     query = request.GET.get('q', '')  # Obtener el término de búsqueda
+    sort_field = request.GET.get('sort', 'last_name')  # Campo por defecto para ordenar
+    sort_order = request.GET.get('order', 'asc')  # Orden por defecto (ascendente)
 
-    custodiams_list = Custodiam.objects.filter(status="True").order_by('last_name')
-    
+    # Obtener todos los custodios activos
+    custodiams_list = Custodiam.objects.filter(status="True")
+
+    # Filtrar por búsqueda
     if query:
         custodiams_list = custodiams_list.filter(
-            first_name__icontains=query
-        ) | custodiams_list.filter(last_name__icontains=query)  # Buscar por nombre y apellido
+            Q(first_name__icontains=query) | Q(last_name__icontains=query)
+        )
 
-    paginator = Paginator(custodiams_list, 4)  
-    page_number = request.GET.get('page')  
+    # Ordenar los resultados
+    if sort_order == 'desc':
+        sort_field = f'-{sort_field}'  # Agregar el prefijo '-' para orden descendente
+    custodiams_list = custodiams_list.order_by(sort_field)
+
+    # Paginación
+    paginator = Paginator(custodiams_list, 4)  # Mostrar 4 custodios por página
+    page_number = request.GET.get('page')
 
     try:
         custodiams = paginator.page(page_number)
@@ -107,5 +118,10 @@ def custodiams_list(request):
     except EmptyPage:
         custodiams = paginator.page(paginator.num_pages)  # Última página si la página solicitada está vacía
 
-    return render(request, 'home/custodiams_list.html', {'custodiams': custodiams, 'query': query})
+    return render(request, 'home/custodiams_list.html', {
+        'custodiams': custodiams,
+        'query': query,
+        'sort_field': sort_field.lstrip('-'),  # Eliminar el prefijo '-' para el template
+        'sort_order': sort_order,
+    })
 

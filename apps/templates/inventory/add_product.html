@@ -1,0 +1,93 @@
+{% extends 'layouts/base.html' %}
+
+{% block title %} Agregar Producto {% endblock title %}
+
+{% block content %}
+<!-- Header -->
+<div class="header bg-gradient-primary pb-8 pt-5 pt-md-8">
+    <div class="container-fluid">
+        <div class="header-body">
+            <h1 class="text-white">Agregar Producto</h1>
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid mt--7">
+    <div class="row">
+        <div class="col">
+            <div class="card shadow">
+                <div class="card-header bg-transparent">
+                    <h3 class="mb-0">Formulario de Producto</h3>
+                </div>
+
+                <div class="card-body">
+                    {% if messages %}
+                        <div class="container mt-3">
+                            {% for message in messages %}
+                                <div class="alert alert-{{ message.tags }}">
+                                    {{ message }}
+                                </div>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+
+                    <form method="POST">
+                        {% csrf_token %}
+                        <div class="row">
+                            <!-- Campo Código -->
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="id_codigo">Código</label>
+                                    {{ form.codigo }}
+                                    {% for error in form.codigo.errors %}
+                                    <small class="form-text text-danger">{{ error }}</small>
+                                    {% endfor %}
+                                </div>
+                            </div>
+
+                            <!-- Campo Descripción -->
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="id_description">Descripción</label>
+                                    {{ form.description }}
+                                    {% for error in form.description.errors %}
+                                    <small class="form-text text-danger">{{ error }}</small>
+                                    {% endfor %}
+                                </div>
+                            </div>
+
+                            <!-- Campo Serie -->
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="id_serie">Serie</label>
+                                    {{ form.serie }}
+                                    {% for error in form.serie.errors %}
+                                    <small class="form-text text-danger">{{ error }}</small>
+                                    {% endfor %}
+                                </div>
+                            </div>
+
+                            <!-- Campo Modelo -->
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="id_prototype">Modelo</label>
+                                    {{ form.prototype }}
+                                    {% for error in form.prototype.errors %}
+                                    <small class="form-text text-danger">{{ error }}</small>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card-footer text-center">
+                            <button type="submit" class="btn btn-primary">Guardar</button>
+                            <a href="{% url 'home:products_list' %}" class="btn btn-secondary">Cancelar</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}

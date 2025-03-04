@@ -50,3 +50,29 @@ class PrototypeForm(forms.ModelForm):
         elif self.instance.pk:
             # Si es una edición, filtrar marcas según el tipo del modelo
             self.fields['brand'].queryset = Brand.objects.filter(tipo=self.instance.tipo)
+
+
+
+
+class ProductForm(forms.ModelForm):
+    class Meta:
+        model = Product
+        fields = ['codigo', 'description', 'serie', 'prototype']
+        widgets = {
+            'codigo': forms.TextInput(attrs={
+                'class': 'form-control',
+                'placeholder': 'Código del producto',
+            }),
+            'description': forms.TextInput(attrs={
+                'class': 'form-control',
+                'placeholder': 'Descripción del producto',
+            }),
+            'serie': forms.TextInput(attrs={
+                'class': 'form-control',
+                'placeholder': 'Serie del producto',
+            }),
+            'prototype': forms.Select(attrs={
+                'class': 'form-control',
+            }),
+        }
+        

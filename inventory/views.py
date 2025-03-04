@@ -104,5 +104,47 @@ def delete_prototype(request, pk):
         prototype.status = False
         prototype.save()
         messages.success(request, "Modelo desactivado correctamente.")
-        return redirect('inventory:prototype_list')
+        return redirect('home:prototypes_list')
     return render(request, 'inventory/delete_prototype.html', {'prototype': prototype})
+
+
+
+
+def add_product(request):
+    if request.method == 'POST':
+        form = ProductForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Producto agregado correctamente.")
+            return redirect('inventory:add_product')
+        else:
+            messages.error(request, "Hubo un error al agregar el producto.")
+    else:
+        form = ProductForm()
+    return render(request, 'inventory/add_product.html', {'form': form})
+
+
+
+def edit_product(request, pk):
+    product = get_object_or_404(Product, id=pk)
+    if request.method == 'POST':
+        form = ProductForm(request.POST, instance=product)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Producto actualizado correctamente.")
+            return redirect('home:products_list')
+        else:
+            messages.error(request, "Hubo un error al actualizar el producto.")
+    else:
+        form = ProductForm(instance=product)
+    return render(request, 'inventory/edit_product.html', {'form': form, 'product': product})
+
+
+def delete_product(request, pk):
+    product = get_object_or_404(Product, id=pk)
+    if request.method == 'POST':
+        product.status = False
+        product.save()
+        messages.success(request, "Producto desactivado correctamente.")
+        return redirect('home:products_list')
+    return render(request, 'inventory/delete_product.html', {'product': product})

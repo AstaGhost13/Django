@@ -13,4 +13,9 @@ urlpatterns = [
     path('add-prototype/', views.add_prototype, name='add_prototype'),
     path('edit-prototype/<uuid:pk>/', views.edit_prototype, name='edit_prototype'),
     path('delete-prototype/<uuid:pk>/', views.delete_prototype, name='delete_prototype'),
+
+    #para productos
+    path('add-product/', views.add_product, name='add_product'),
+    path('edit-product/<uuid:pk>/', views.edit_product, name='edit_product'),
+    path('delete-product/<uuid:pk>/', views.delete_product, name='delete_product'),
 ]

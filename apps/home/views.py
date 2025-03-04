@@ -175,3 +175,30 @@ def prototypes_list(request):
         prototypes = paginator.page(paginator.num_pages)  # Última página si la página solicitada está vacía
 
     return render(request, 'home/prototypes_list.html', {'prototypes': prototypes, 'query': query})
+
+
+
+def products_list(request):
+    query = request.GET.get('q', '')
+    products = Product.objects.filter(status=True).order_by('description')
+    
+    if query:
+        products = products.filter(description__icontains=query)
+
+    paginator = Paginator(products, 3)
+    page_number = request.GET.get('page')
+
+
+    try:
+        products = paginator.page(page_number)
+    except PageNotAnInteger:
+        products = paginator.page(1)  # Página por defecto si no es un número entero
+    except EmptyPage:
+        products = paginator.page(paginator.num_pages)  # Última página si la página solicitada está vacía
+
+    return render(request, 'home/products_list.html', {'products': products, 'query': query})
+
+
+
+
+

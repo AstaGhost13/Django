@@ -1,0 +1,82 @@
+{% extends 'layouts/base.html' %}
+
+{% block title %} Editar Asignación {% endblock title %}
+
+{% block content %}
+<!-- Header -->
+<div class="header bg-gradient-primary pb-8 pt-5 pt-md-8">
+    <div class="container-fluid">
+        <div class="header-body">
+            <h1 class="text-white">Editar Asignación</h1>
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid mt--7">
+    <div class="row">
+        <div class="col">
+            <div class="card shadow">
+                <div class="card-header bg-transparent">
+                    <h3 class="mb-0">Formulario de Asignación</h3>
+                </div>
+
+                <div class="card-body">
+                    {% if messages %}
+                        <div class="container mt-3">
+                            {% for message in messages %}
+                                <div class="alert alert-{{ message.tags }}">
+                                    {{ message }}
+                                </div>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+
+                    <form method="POST">
+                        {% csrf_token %}
+                        <div class="row">
+                            <!-- Campo Producto -->
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="id_product">Producto</label>
+                                    {{ form.product }}
+                                    {% for error in form.product.errors %}
+                                    <small class="form-text text-danger">{{ error }}</small>
+                                    {% endfor %}
+                                </div>
+                            </div>
+
+                            <!-- Campo Custodio -->
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="id_custodiam">Custodio</label>
+                                    {{ form.custodiam }}
+                                    {% for error in form.custodiam.errors %}
+                                    <small class="form-text text-danger">{{ error }}</small>
+                                    {% endfor %}
+                                </div>
+                            </div>
+
+                            <!-- Campo Estado -->
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="id_status">Estado</label>
+                                    {{ form.status }}
+                                    {% for error in form.status.errors %}
+                                    <small class="form-text text-danger">{{ error }}</small>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card-footer text-center">
+                            <button type="submit" class="btn btn-primary">Guardar cambios</button>
+                            <a href="{% url 'home:productAssignments_list' %}" class="btn btn-secondary">Cancelar</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}

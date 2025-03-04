@@ -148,3 +148,44 @@ def delete_product(request, pk):
         messages.success(request, "Producto desactivado correctamente.")
         return redirect('home:products_list')
     return render(request, 'inventory/delete_product.html', {'product': product})
+
+
+
+
+def add_productAssignment(request):
+    if request.method == 'POST':
+        form = ProductAssignmentForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Asignación agregada correctamente.")
+            return redirect('home:productAssignments_list')
+        else:
+            messages.error(request, "Hubo un error al agregar la asignación.")
+    else:
+        form = ProductAssignmentForm()
+    return render(request, 'inventory/add_productAssignment.html', {'form': form})
+
+
+def edit_productAssignment(request, pk):
+    asignacion = get_object_or_404(ProductAssignment, id=pk)
+    if request.method == 'POST':
+        form = ProductAssignmentForm(request.POST, instance=asignacion)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Asignación actualizada correctamente.")
+            return redirect('home:productAssignments_list')
+        else:
+            messages.error(request, "Hubo un error al actualizar la asignación.")
+    else:
+        form = ProductAssignmentForm(instance=asignacion)
+    return render(request, 'inventory/edit_productAssignment.html', {'form': form, 'asignacion': asignacion})
+
+
+def delete_productAssignment(request, pk):
+    asignacion = get_object_or_404(ProductAssignment, id=pk)
+    if request.method == 'POST':
+        asignacion.status = False
+        asignacion.save()
+        messages.success(request, "Asignación desactivada correctamente.")
+        return redirect('home:productAssignments_list')
+    return render(request, 'inventory/delete_productAssignment.html', {'asignacion': asignacion})

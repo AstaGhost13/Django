@@ -28,7 +28,7 @@ class ProductAdmin(admin.ModelAdmin):
 admin.site.register(Product, ProductAdmin)
 
 
-class AsignacionProductoAdmin(admin.ModelAdmin):
+class ProductAssignmentAdmin(admin.ModelAdmin):
     list_display = (
         'pkid', 
         'id',
@@ -43,4 +43,4 @@ class AsignacionProductoAdmin(admin.ModelAdmin):
     )
 
 
-admin.site.register(AsignacionProduct, AsignacionProductoAdmin)
+admin.site.register(ProductAssignment, ProductAssignmentAdmin)

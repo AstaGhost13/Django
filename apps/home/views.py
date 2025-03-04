@@ -131,6 +131,7 @@ def custodiams_list(request):
 
 def brands_list(request):
     query = request.GET.get('q', '')  # Obtener el término de búsqueda
+    
 
     # Filtrar marcas activas y ordenar por descripción
     brands_list = Brand.objects.filter(status=True).order_by('description')
@@ -200,5 +201,40 @@ def products_list(request):
 
 
 
+def productAssignments_list(request):
+    query = request.GET.get('q', '')  # Obtener el término de búsqueda
+    sort_field = request.GET.get('sort', 'product__description')  # Campo de ordenación
+    sort_order = request.GET.get('order', 'asc')  # Orden (asc o desc)
+
+    # Filtrar asignaciones activas
+    asignaciones_list = ProductAssignment.objects.filter(status=True)
+
+    # Si hay un término de búsqueda, filtrar por descripción del producto
+    if query:
+        asignaciones_list = asignaciones_list.filter(product__description__icontains=query)
+
+    # Ordenar las asignaciones
+    if sort_order == 'asc':
+        asignaciones_list = asignaciones_list.order_by(sort_field)
+    else:
+        asignaciones_list = asignaciones_list.order_by(f'-{sort_field}')
+
+    # Paginación: 10 asignaciones por página
+    paginator = Paginator(asignaciones_list, 4)  
+    page_number = request.GET.get('page')  
+
+    try:
+        asignaciones = paginator.page(page_number)
+    except PageNotAnInteger:
+        asignaciones = paginator.page(1)  # Página por defecto si no es un número entero
+    except EmptyPage:
+        asignaciones = paginator.page(paginator.num_pages)  # Última página si la página solicitada está vacía
+
+    return render(request, 'home/productAssignments_list.html', {
+        'asignaciones': asignaciones,
+        'query': query,
+        'sort_field': sort_field,
+        'sort_order': sort_order,
+    })
 
 

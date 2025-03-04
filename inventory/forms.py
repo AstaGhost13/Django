@@ -76,3 +76,20 @@ class ProductForm(forms.ModelForm):
             }),
         }
         
+
+class ProductAssignmentForm(forms.ModelForm):
+    class Meta:
+        model = ProductAssignment
+        fields = ['product', 'custodiam']
+        widgets = {
+            'product': forms.Select(attrs={
+                'class': 'form-control',
+            }),
+            'custodiam': forms.Select(attrs={
+                'class': 'form-control',
+            }),
+        }
+        labels = {
+            'product': 'Producto',
+            'custodiam': 'Custodio',
+        }

@@ -16,6 +16,7 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 from hierarchy.forms import *
 from hierarchy.models import *
+from inventory.models import *
 
 
 @login_required(login_url="/login/")
@@ -125,3 +126,28 @@ def custodiams_list(request):
         'sort_order': sort_order,
     })
 
+
+#para inventario
+
+def brands_list(request):
+    query = request.GET.get('q', '')  # Obtener el término de búsqueda
+
+    # Filtrar marcas activas y ordenar por descripción
+    brands_list = Brand.objects.filter(status=True).order_by('description')
+    
+    # Si hay un término de búsqueda, filtrar por descripción
+    if query:
+        brands_list = brands_list.filter(description__icontains=query)
+
+    # Paginación: 10 marcas por página
+    paginator = Paginator(brands_list, 4)  
+    page_number = request.GET.get('page')  
+
+    try:
+        brands = paginator.page(page_number)
+    except PageNotAnInteger:
+        brands = paginator.page(1)  # Página por defecto si no es un número entero
+    except EmptyPage:
+        brands = paginator.page(paginator.num_pages)  # Última página si la página solicitada está vacía
+
+    return render(request, 'home/brands_list.html', {'brands': brands, 'query': query})

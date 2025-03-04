@@ -80,6 +80,16 @@
                     </a>
                   </th>
                   <th scope="col">
+                    <a href="?sort=custodiam__position__description&order={% if sort_field == 'custodiam__position__description' and sort_order == 'asc' %}desc{% else %}asc{% endif %}&q={{ query }}">
+                      Cargo {% if sort_field == 'custodiam__position__description' %}{% if sort_order == 'asc' %}&uarr;{% else %}&darr;{% endif %}{% endif %}
+                    </a>
+                  </th>
+                  <th scope="col">
+                    <a href="?sort=product__prototype__brand__description&order={% if sort_field == 'product__prototype__brand__description' and sort_order == 'asc' %}desc{% else %}asc{% endif %}&q={{ query }}">
+                      Marca y Modelo {% if sort_field == 'product__prototype__brand__description' %}{% if sort_order == 'asc' %}&uarr;{% else %}&darr;{% endif %}{% endif %}
+                    </a>
+                  </th>
+                  <th scope="col">
                     <a href="?sort=status&order={% if sort_field == 'status' and sort_order == 'asc' %}desc{% else %}asc{% endif %}&q={{ query }}">
                       Estado {% if sort_field == 'status' %}{% if sort_order == 'asc' %}&uarr;{% else %}&darr;{% endif %}{% endif %}
                     </a>
@@ -98,6 +108,20 @@
                     <tr>
                       <td>{{ asignacion.product.description }}</td>
                       <td>{{ asignacion.custodiam.first_name }} {{ asignacion.custodiam.last_name }}</td>
+                      <td>
+                        {% if asignacion.custodiam.position %}
+                          {{ asignacion.custodiam.position.description }}
+                        {% else %}
+                          <span class="text-muted">Sin cargo</span>
+                        {% endif %}
+                      </td>
+                      <td>
+                        {% if asignacion.product.prototype and asignacion.product.prototype.brand %}
+                          {{ asignacion.product.prototype.brand.description }} - {{ asignacion.product.prototype.description }}
+                        {% else %}
+                          <span class="text-muted">Sin marca y modelo</span>
+                        {% endif %}
+                      </td>
                       <td>
                         {% if asignacion.status %}
                           <span class="badge badge-dot mr-4">
@@ -153,7 +177,7 @@
                   {% endfor %}
                 {% else %}
                   <tr>
-                    <td colspan="5" class="text-center">
+                    <td colspan="7" class="text-center">
                       <div class="alert alert-warning" role="alert">
                         No se encontraron asignaciones con los criterios de búsqueda proporcionados.
                       </div>

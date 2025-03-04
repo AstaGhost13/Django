@@ -1,0 +1,74 @@
+{% extends 'layouts/base.html' %}
+
+{% block content %}
+<!-- Header -->
+<div class="header bg-gradient-primary pb-8 pt-5 pt-md-8">
+    <div class="container-fluid">
+        <div class="header-body">
+            <h1 class="text-white">Editar Modelo</h1>
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid mt--7">
+    <div class="row">
+        <div class="col">
+            <div class="card shadow">
+                <div class="card-header bg-transparent d-flex justify-content-between align-items-center">
+                    <h3 class="mb-0">Detalles del Modelo</h3>
+                </div>
+                <!-- Formulario de Edición -->
+                <form method="POST">
+                    {% csrf_token %}
+                    <div class="card-body">
+                        <div class="row">
+                            <!-- Campo Descripción -->
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="id_description">Descripción</label>
+                                    {{ form.description }}
+                                    {% for error in form.description.errors %}
+                                    <small class="form-text text-danger">{{ error }}</small>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <!-- Campo Tipo -->
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="id_tipo">Tipo</label>
+                                    {{ form.tipo }}
+                                    {% for error in form.tipo.errors %}
+                                    <small class="form-text text-danger">{{ error }}</small>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <!-- Campo Marca -->
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="id_brand">Marca</label>
+                                    {{ form.brand }}
+                                    {% for error in form.brand.errors %}
+                                    <small class="form-text text-danger">{{ error }}</small>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card-footer text-center">
+                        <button type="submit" class="btn btn-primary">Guardar cambios</button>
+                        <a href="{% url 'home:prototypes_list' %}" class="btn btn-secondary">Cancelar</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

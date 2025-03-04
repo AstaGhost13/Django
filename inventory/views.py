@@ -59,3 +59,50 @@ def delete_brand(request, pk):
     
     return render(request, 'inventory/delete_brand.html', {'brand': brand})
 
+
+
+def add_prototype(request):
+    if request.method == 'POST':
+        form = PrototypeForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Modelo agregado correctamente.")
+            return redirect('inventory:add_prototype')
+        else:
+            messages.error(request, "Hubo un error al agregar el modelo.")
+    else:
+        form = PrototypeForm()
+    return render(request, 'inventory/add_prototype.html', {'form': form})
+
+
+
+def edit_prototype(request, pk):
+    prototype = get_object_or_404(Prototype, id=pk)
+
+    if request.method == 'POST':
+        form = PrototypeForm(request.POST, instance=prototype)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Modelo actualizado correctamente.")
+            return redirect('home:prototypes_list')
+        else:
+            messages.error(request, "Hubo un error al actualizar el modelo.")
+    else:
+        form = PrototypeForm(instance=prototype)
+
+    return render(request, 'inventory/edit_prototype.html', {
+        'form': form,
+        'prototype': prototype,
+    })
+
+
+
+
+def delete_prototype(request, pk):
+    prototype = get_object_or_404(Prototype, id=pk)
+    if request.method == 'POST':
+        prototype.status = False
+        prototype.save()
+        messages.success(request, "Modelo desactivado correctamente.")
+        return redirect('inventory:prototype_list')
+    return render(request, 'inventory/delete_prototype.html', {'prototype': prototype})

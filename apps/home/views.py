@@ -151,3 +151,27 @@ def brands_list(request):
         brands = paginator.page(paginator.num_pages)  # Última página si la página solicitada está vacía
 
     return render(request, 'home/brands_list.html', {'brands': brands, 'query': query})
+
+
+def prototypes_list(request):
+    query = request.GET.get('q', '')  # Obtener el término de búsqueda
+
+    # Filtrar modelos activos y ordenar por descripción
+    prototypes_list = Prototype.objects.filter(status=True).order_by('description')
+    
+    # Si hay un término de búsqueda, filtrar por descripción
+    if query:
+        prototypes_list = prototypes_list.filter(description__icontains=query)
+
+    # Paginación: 10 modelos por página
+    paginator = Paginator(prototypes_list, 3)  
+    page_number = request.GET.get('page')  
+
+    try:
+        prototypes = paginator.page(page_number)
+    except PageNotAnInteger:
+        prototypes = paginator.page(1)  # Página por defecto si no es un número entero
+    except EmptyPage:
+        prototypes = paginator.page(paginator.num_pages)  # Última página si la página solicitada está vacía
+
+    return render(request, 'home/prototypes_list.html', {'prototypes': prototypes, 'query': query})

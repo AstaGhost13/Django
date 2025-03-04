@@ -16,7 +16,7 @@ urlpatterns = [
     
     #para inventario
     path('brands/', views.brands_list, name='brands_list'),
-    #path('prototype/', views.prototypes_list, name='prototypes_list'),
+    path('prototypes/', views.prototypes_list, name='prototypes_list'),
     
     # Coloca la expresión regular al final para evitar conflictos
     re_path(r'^.*\.*', views.pages, name='pages'),

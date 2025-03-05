@@ -277,3 +277,23 @@ def softwares_list(request):
         softwares = paginator.page(paginator.num_pages)  # Última página si la página solicitada está vacía
 
     return render(request, 'home/softwares_list.html', {'softwares': softwares, 'query': query})
+
+
+def displayNames_list(request):
+    query = request.GET.get('q', '')
+    displayNames = DisplayName.objects.filter(status=True).order_by('name')
+    
+    if query:
+        displayNames = displayNames.filter(name__icontains=query)
+
+    paginator = Paginator(displayNames, 3)
+    page_number = request.GET.get('page')
+
+    try:
+        displayNames = paginator.page(page_number)
+    except PageNotAnInteger:
+        displayNames = paginator.page(1)  # Página por defecto si no es un número entero
+    except EmptyPage:
+        displayNames = paginator.page(paginator.num_pages)  # Última página si la página solicitada está vacía
+
+    return render(request, 'home/displayNames_list.html', {'displayNames': displayNames, 'query': query})

@@ -50,3 +50,17 @@ class SoftwareForm(forms.ModelForm):
                 'class': 'form-control',
             }),
         }
+
+class DisplayNameForm(forms.ModelForm):
+    class Meta:
+        model = DisplayName
+        fields = ['name', 'product']
+        widgets = {
+            'name': forms.TextInput(attrs={
+                'class': 'form-control',
+                'placeholder': 'Nombre de la máquina',
+            }),
+            'product': forms.Select(attrs={
+                'class': 'form-control',
+            }),
+        }

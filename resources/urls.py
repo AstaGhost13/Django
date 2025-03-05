@@ -13,4 +13,9 @@ urlpatterns = [
     path('add-software/', views.add_software, name='add_software'),
     path('edit-software/<uuid:pk>/', views.edit_software, name='edit_software'),
     path('delete-software/<uuid:pk>/', views.delete_software, name='delete_software'),
+
+    #para nombre maquina
+    path('add-displayName/', views.add_displayName, name='add_displayName'),
+    path('edit-displayName/<uuid:pk>/', views.edit_displayName, name='edit_displayName'),
+    path('delete-displayName/<uuid:pk>/', views.delete_displayName, name='delete_displayName'),
 ]

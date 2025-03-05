@@ -82,3 +82,43 @@ def delete_software(request, pk):
         messages.success(request, "Software desactivado correctamente.")
         return redirect('home:softwares_list')
     return render(request, 'resources/delete_software.html', {'software': software})
+
+
+def add_displayName(request):
+    if request.method == 'POST':
+        form = DisplayNameForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Nombre de máquina agregado correctamente.")
+            return redirect('home:displayNames_list')
+        else:
+            messages.error(request, "Hubo un error al agregar el nombre de máquina.")
+    else:
+            form = DisplayNameForm()
+    return render(request, 'resources/add_displayName.html', {'form': form})
+    
+
+
+def edit_displayName(request, pk):
+    displayName = get_object_or_404(DisplayName, id=pk)
+    if request.method == 'POST':
+        form = DisplayNameForm(request.POST, instance=displayName)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Nombre de máquina actualizado correctamente.")
+            return redirect('home:displayNames_list')
+        else:
+            messages.error(request, "Hubo un error al actualizar el nombre de máquina.")
+    else:
+        form = DisplayNameForm(instance=displayName)
+    return render(request, 'resources/edit_displayName.html', {'form': form, 'displayName': displayName})
+
+
+def delete_displayName(request, pk):
+    displayName = get_object_or_404(DisplayName, id=pk) 
+    if request.method == 'POST':
+        displayName.status = False
+        displayName.save()
+        messages.success(request, "Nombre de máquina desactivado correctamente.")
+        return redirect('home:displayNames_list')
+    return render(request, 'resources/delete_displayName.html', {'displayName': displayName})

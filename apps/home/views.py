@@ -257,3 +257,23 @@ def hardwares_list(request):
         hardwares = paginator.page(paginator.num_pages)  # Última página si la página solicitada está vacía
 
     return render(request, 'home/hardwares_list.html', {'hardwares': hardwares, 'query': query})
+
+
+def softwares_list(request):
+    query = request.GET.get('q', '')
+    softwares = Software.objects.filter(status=True).order_by('version')
+    
+    if query:
+        softwares = softwares.filter(version__icontains=query)
+
+    paginator = Paginator(softwares, 3)
+    page_number = request.GET.get('page')
+
+    try:
+        softwares = paginator.page(page_number)
+    except PageNotAnInteger:
+        softwares = paginator.page(1)  # Página por defecto si no es un número entero
+    except EmptyPage:
+        softwares = paginator.page(paginator.num_pages)  # Última página si la página solicitada está vacía
+
+    return render(request, 'home/softwares_list.html', {'softwares': softwares, 'query': query})

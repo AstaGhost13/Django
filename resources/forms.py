@@ -25,3 +25,28 @@ class HardwareForm(forms.ModelForm):
                 'class': 'form-control',
             }),
         }
+
+class SoftwareForm(forms.ModelForm):
+    class Meta:
+        model = Software
+        fields = ['version', 'edition', 'installation_date', 'licenses', 'product']
+        widgets = {
+            'version': forms.TextInput(attrs={
+                'class': 'form-control',
+                'placeholder': 'Versión del software',
+            }),
+            'edition': forms.TextInput(attrs={
+                'class': 'form-control',
+                'placeholder': 'Edición del software',
+            }),
+            'installation_date': forms.DateInput(attrs={
+                'class': 'form-control',
+                'type': 'date',
+            }),
+            'licenses': forms.CheckboxInput(attrs={
+                'class': 'form-check-input',
+            }),
+            'product': forms.Select(attrs={
+                'class': 'form-control',
+            }),
+        }

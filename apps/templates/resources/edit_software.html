@@ -1,0 +1,107 @@
+{% extends 'layouts/base.html' %}
+
+{% block title %} Editar Software {% endblock title %}
+
+{% block content %}
+<!-- Header -->
+<div class="header bg-gradient-primary pb-8 pt-5 pt-md-8">
+    <div class="container-fluid">
+        <div class="header-body">
+            <h1 class="text-white">Editar Software</h1>
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid mt--7">
+    <div class="row">
+        <div class="col">
+            <div class="card shadow">
+                <div class="card-header bg-transparent">
+                    <h3 class="mb-0">Formulario de Software</h3>
+                </div>
+
+                <div class="card-body">
+                    {% if messages %}
+                        <div class="container mt-3">
+                            {% for message in messages %}
+                                <div class="alert alert-{{ message.tags }}">
+                                    {{ message }}
+                                </div>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+
+                    <form method="POST">
+                        {% csrf_token %}
+                        <div class="row">
+                            <!-- Campo Versión -->
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="id_version">Versión</label>
+                                    {{ form.version }}
+                                    {% for error in form.version.errors %}
+                                    <small class="form-text text-danger">{{ error }}</small>
+                                    {% endfor %}
+                                </div>
+                            </div>
+
+                            <!-- Campo Edición -->
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="id_edition">Edición</label>
+                                    {{ form.edition }}
+                                    {% for error in form.edition.errors %}
+                                    <small class="form-text text-danger">{{ error }}</small>
+                                    {% endfor %}
+                                </div>
+                            </div>
+
+                            <!-- Campo Fecha de Instalación -->
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="id_installation_date">Fecha de Instalación</label>
+                                    {{ form.installation_date }}
+                                    {% for error in form.installation_date.errors %}
+                                    <small class="form-text text-danger">{{ error }}</small>
+                                    {% endfor %}
+                                </div>
+                            </div>
+
+                            <!-- Campo Licencias -->
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="id_licenses">Tiene Licencia</label> 
+                                 
+                                    <div class="form-check">
+                                        {{ form.licenses }}
+                                    </div>
+                                    {% for error in form.licenses.errors %}
+                                    <small class="form-text text-danger">{{ error }}</small>
+                                    {% endfor %}
+                                </div>
+                            </div>
+
+                            <!-- Campo Producto -->
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="id_product">Producto</label>
+                                    {{ form.product }}
+                                    {% for error in form.product.errors %}
+                                    <small class="form-text text-danger">{{ error }}</small>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card-footer text-center">
+                            <button type="submit" class="btn btn-primary">Guardar cambios</button>
+                            <a href="{% url 'home:softwares_list' %}" class="btn btn-secondary">Cancelar</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}

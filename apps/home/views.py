@@ -17,6 +17,7 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from hierarchy.forms import *
 from hierarchy.models import *
 from inventory.models import *
+from resources.models import *
 
 
 @login_required(login_url="/login/")
@@ -238,3 +239,21 @@ def productAssignments_list(request):
     })
 
 
+def hardwares_list(request):
+    query = request.GET.get('q', '')
+    hardwares = Hardware.objects.filter(status=True).order_by('processor')
+    
+    if query:
+        hardwares = hardwares.filter(processor__icontains=query)
+
+    paginator = Paginator(hardwares, 3)
+    page_number = request.GET.get('page')
+
+    try:
+        hardwares = paginator.page(page_number)
+    except PageNotAnInteger:
+        hardwares = paginator.page(1)  # Página por defecto si no es un número entero
+    except EmptyPage:
+        hardwares = paginator.page(paginator.num_pages)  # Última página si la página solicitada está vacía
+
+    return render(request, 'home/hardwares_list.html', {'hardwares': hardwares, 'query': query})

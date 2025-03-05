@@ -6,7 +6,7 @@ from django.utils.translation import gettext_lazy as _
 class TipoDisco:
     MECANICO = 'A'
     SOLIDO = 'B'
-    NULO = 'B'
+    NULO = 'C'
     OPCIONES = [
         (MECANICO, _('MECANICO')),
         (SOLIDO, _('SOLIDO')),

@@ -21,6 +21,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('hierarchy/', include('hierarchy.urls')),  # Incluye las URLs de 'hierarchy'
     path('inventory/', include('inventory.urls')),  # Incluye las URLs de 'inventory'
+    path('resources/', include('resources.urls')),  # Incluye las URLs de 'resources'
     path("", include("apps.authentication.urls")),  # Rutas de autenticación
     path('', include("apps.home.urls")),  # Rutas de home
     path('select2/', include('django_select2.urls')),

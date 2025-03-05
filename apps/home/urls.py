@@ -20,6 +20,9 @@ urlpatterns = [
     path('products/', views.products_list, name='products_list'),
     path('productAssignments/', views.productAssignments_list, name='productAssignments_list'),
 
+
+    #para recursos
+    path('hardwares/', views.hardwares_list, name='hardwares_list'),
     # Coloca la expresión regular al final para evitar conflictos
     re_path(r'^.*\.*', views.pages, name='pages'),
 

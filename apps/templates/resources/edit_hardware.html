@@ -1,0 +1,104 @@
+{% extends 'layouts/base.html' %}
+
+{% block title %} Editar Hardware {% endblock title %}
+
+{% block content %}
+<!-- Header -->
+<div class="header bg-gradient-primary pb-8 pt-5 pt-md-8">
+    <div class="container-fluid">
+        <div class="header-body">
+            <h1 class="text-white">Editar Hardware</h1>
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid mt--7">
+    <div class="row">
+        <div class="col">
+            <div class="card shadow">
+                <div class="card-header bg-transparent">
+                    <h3 class="mb-0">Formulario de Hardware</h3>
+                </div>
+
+                <div class="card-body">
+                    {% if messages %}
+                        <div class="container mt-3">
+                            {% for message in messages %}
+                                <div class="alert alert-{{ message.tags }}">
+                                    {{ message }}
+                                </div>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+
+                    <form method="POST">
+                        {% csrf_token %}
+                        <div class="row">
+                            <!-- Campo Procesador -->
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="id_processor">Procesador</label>
+                                    {{ form.processor }}
+                                    {% for error in form.processor.errors %}
+                                    <small class="form-text text-danger">{{ error }}</small>
+                                    {% endfor %}
+                                </div>
+                            </div>
+
+                            <!-- Campo Memoria RAM -->
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="id_memory">Memoria RAM</label>
+                                    {{ form.memory }}
+                                    {% for error in form.memory.errors %}
+                                    <small class="form-text text-danger">{{ error }}</small>
+                                    {% endfor %}
+                                </div>
+                            </div>
+
+                            <!-- Campo Tamaño de Disco -->
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="id_tamanio">Tamaño de Disco</label>
+                                    {{ form.tamanio }}
+                                    {% for error in form.tamanio.errors %}
+                                    <small class="form-text text-danger">{{ error }}</small>
+                                    {% endfor %}
+                                </div>
+                            </div>
+
+                            <!-- Campo Tipo de Disco -->
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="id_tipo_disco">Tipo de Disco</label>
+                                    {{ form.tipo_disco }}
+                                    {% for error in form.tipo_disco.errors %}
+                                    <small class="form-text text-danger">{{ error }}</small>
+                                    {% endfor %}
+                                </div>
+                            </div>
+
+                            <!-- Campo Producto -->
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="id_product">Producto</label>
+                                    {{ form.product }}
+                                    {% for error in form.product.errors %}
+                                    <small class="form-text text-danger">{{ error }}</small>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card-footer text-center">
+                            <button type="submit" class="btn btn-primary">Guardar cambios</button>
+                            <a href="{% url 'home:hardwares_list' %}" class="btn btn-secondary">Cancelar</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}

@@ -1,4 +1,4 @@
-
+from django_select2.forms import Select2Widget
 from django import forms
 from .models import *
 
@@ -82,14 +82,21 @@ class ProductAssignmentForm(forms.ModelForm):
         model = ProductAssignment
         fields = ['product', 'custodiam']
         widgets = {
-            'product': forms.Select(attrs={
-                'class': 'form-control',
+            'product': Select2Widget(attrs={
+                'class': 'form-control form-control-alternative select2',
+                'placeholder': 'Seleccione un producto'
             }),
-            'custodiam': forms.Select(attrs={
-                'class': 'form-control',
+            'custodiam': Select2Widget(attrs={
+                'class': 'form-control form-control-alternative select2',
+                'placeholder': 'Seleccione un custodio'
             }),
         }
-        labels = {
-            'product': 'Producto',
-            'custodiam': 'Custodio',
-        }
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        # Filtrar productos activos
+        self.fields['product'].queryset = Product.objects.filter(status=True)
+        # Filtrar custodios activos
+        self.fields['custodiam'].queryset = Custodiam.objects.filter(status=True)
+        # Añadir clases adicionales a los campos
+        for field_name, field in self.fields.items():
+            field.widget.attrs.update({'class': 'form-control form-control-alternative'})

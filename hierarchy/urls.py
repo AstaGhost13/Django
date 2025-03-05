@@ -9,6 +9,7 @@ urlpatterns = [
     path('add-custodiam/', views.add_custodiam, name='add_custodiam'),
     path('edit-custodian/<uuid:pk>/', views.edit_custodiam, name='edit_custodian'),
     path('delete-custodian/<uuid:pk>/', views.delete_custodian, name='delete_custodian'),
+    path('custodiam-details/', views.custodiam_details, name='custodiam_details'),
     
 ]
 

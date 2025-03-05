@@ -1,0 +1,45 @@
+/* Mantiene la estructura de Bootstrap en Select2 */
+.select2-container--default .select2-selection--single {
+    border: 1px solid #ced4da !important;
+    border-radius: 0 0.25rem 0.25rem 0 !important;
+    height: calc(2.25rem + 2px) !important;
+    padding: 0.375rem 0.75rem !important;
+    background-color: #fff !important;
+    color: #999;
+    display: flex !important;
+    align-items: center !important;
+}
+
+/* Ajusta la alineación del input-group con Select2 */
+.input-group .select2-container {
+    flex-grow: 1;
+    width: auto !important;
+}
+
+/* Corregir la separación del icono */
+.input-group-prepend .input-group-text {
+    border-radius: 0.25rem 0 0 0.25rem !important;
+}
+
+/* Ajusta el texto dentro del Select2 para que se alinee bien */
+.select2-container--default .select2-selection--single .select2-selection__rendered {
+    line-height: 1.5 !important;
+    padding-left: 0.75rem !important;
+    color: #999;
+}
+/* Ajustar el color y tamaño de la letra en el Select2 */
+.select2-selection__rendered {
+    color: #6c757d !important; /* Gris claro similar a Bootstrap */
+    font-size: 0.875rem !important; /* Tamaño de letra más pequeño */
+}
+
+.select2-container--default .select2-selection--single {
+    border: 1px solid #ced4da !important; /* Borde gris similar a Bootstrap */
+    background-color: #fff !important;
+    font-size: 0.875rem !important; /* Tamaño de letra más pequeño */
+}
+
+/* Ajustar el icono de la flecha */
+.select2-selection__arrow {
+    color: #6c757d !important; /* Gris claro similar a Bootstrap */
+}

@@ -1,5 +1,6 @@
+import uuid
 from django.contrib import messages
-from django.http import HttpResponseRedirect, JsonResponse
+from django.http import HttpResponseNotFound, HttpResponseRedirect, JsonResponse
 from django.shortcuts import get_object_or_404, render, redirect
 from django.urls import reverse
 from hierarchy.forms import *
@@ -107,3 +108,29 @@ def delete_custodian(request, pk):
         return redirect('home:custodiams_list')  # Redirigir a la lista de custodios
     
     return render(request, 'hierarchy/delete_custodian.html', {'custodiam': custodiam})
+
+def custodiam_details(request):
+    custodiam_id = request.GET.get('custodiam_id')
+    if custodiam_id:
+        try:
+            custodiam = Custodiam.objects.get(pk=custodiam_id)
+
+            # Obtener la descripción de la posición, departamento y piso
+            position_name = custodiam.position.description if custodiam.position else "No Position"
+            department_name = custodiam.position.department.description if custodiam.position and custodiam.position.department else "No Department"
+            floor_name = custodiam.position.department.id_floor.description if custodiam.position and custodiam.position.department and custodiam.position.department.id_floor else "No Floor"
+
+            # Formatear la respuesta con la información solicitada
+            response_data = {
+                'name': f"{custodiam.first_name} {custodiam.last_name}",
+                'position': position_name,
+                'department': department_name,
+                'floor': floor_name,  # Añadir la descripción del piso
+                'phone': custodiam.phone_number,
+                'address': custodiam.address,
+            }
+
+            return JsonResponse(response_data)
+        except Custodiam.DoesNotExist:
+            return JsonResponse({'error': 'Custodio no encontrado'}, status=404)
+    return JsonResponse({'error': 'ID de custodio no proporcionado'}, status=400)

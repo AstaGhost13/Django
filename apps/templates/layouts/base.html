@@ -13,6 +13,7 @@
 =========================================================
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 -->
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 
@@ -34,13 +35,25 @@
   <link rel="stylesheet" href="/static/assets/vendor/@fortawesome/fontawesome-free/css/all.min.css" type="text/css">
   <!-- Page plugins -->
   <!-- Argon CSS -->
+  <link rel="stylesheet" href="/static/assets/css/select2.css?v=1.0.1" type="text/css">
+
   <link rel="stylesheet" href="/static/assets/css/argon.css?v=1.2.0" type="text/css">
 
+ 
+  <!-- jQuery -->
+  <script src="/static/assets/vendor/jquery/dist/jquery.min.js"></script>
+  <!-- Select2 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+  
+
+  
   <!-- Specific CSS goes HERE -->
   {% block stylesheets %}{% endblock stylesheets %}
 
 </head>
 <body class="">
+
 
   {% include "includes/sidenav.html" %}
 
@@ -56,7 +69,9 @@
 
   <!-- Specific JS goes HERE --> 
   {% block javascripts %}{% endblock javascripts %}
-
+  
+  <!-- Select2 JS -->
+  <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
   <script src="/static/assets/js/argon.js?v=1.2.0"></script>
 
 </body>

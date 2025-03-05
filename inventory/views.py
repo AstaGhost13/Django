@@ -1,4 +1,5 @@
 from django.contrib import messages
+from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 
 from inventory.enums.tipo_marca import TipoMarca
@@ -149,22 +150,20 @@ def delete_product(request, pk):
         return redirect('home:products_list')
     return render(request, 'inventory/delete_product.html', {'product': product})
 
-
-
-
 def add_productAssignment(request):
     if request.method == 'POST':
         form = ProductAssignmentForm(request.POST)
         if form.is_valid():
             form.save()
-            messages.success(request, "Asignación agregada correctamente.")
+            messages.success(request, "Asignación creada correctamente.")  # Mensaje de éxito
             return redirect('home:productAssignments_list')
         else:
-            messages.error(request, "Hubo un error al agregar la asignación.")
+            messages.error(request, "Hubo un error al crear la asignación.")  # Mensaje de error
     else:
         form = ProductAssignmentForm()
-    return render(request, 'inventory/add_productAssignment.html', {'form': form})
-
+    
+    custodios = Custodiam.objects.all()
+    return render(request, 'inventory/add_productAssignment.html', {'form': form, 'custodios': custodios})
 
 def edit_productAssignment(request, pk):
     asignacion = get_object_or_404(ProductAssignment, id=pk)
@@ -189,3 +188,34 @@ def delete_productAssignment(request, pk):
         messages.success(request, "Asignación desactivada correctamente.")
         return redirect('home:productAssignments_list')
     return render(request, 'inventory/delete_productAssignment.html', {'asignacion': asignacion})
+
+def product_details(request):
+    product_id = request.GET.get('product_id')
+    if product_id:
+        try:
+            product = Product.objects.get(pk=product_id)
+            
+            # Asegurándonos de que el campo 'prototype' sea serializable
+            prototype_data = None
+            if product.prototype:
+                prototype_data = {
+                    'id': product.prototype.id,
+                    'description': product.prototype.description,
+                    'tipo': product.prototype.tipo,
+                    'brand': {
+                        'id': product.prototype.brand.id if product.prototype.brand else None,
+                        'description': product.prototype.brand.description if product.prototype.brand else "No Brand",
+                        'tipo': product.prototype.brand.tipo if product.prototype.brand else None
+                    } if product.prototype.brand else "No Brand"
+                }
+
+            response_data = {
+                'codigo': product.codigo,
+                'description': product.description,
+                'serie': product.serie,
+                'prototype': prototype_data,  
+            }
+            return JsonResponse(response_data)
+        except Product.DoesNotExist:
+            return JsonResponse({'error': 'Producto no encontrado'}, status=404)
+    return JsonResponse({'error': 'ID de producto no proporcionado'}, status=400)

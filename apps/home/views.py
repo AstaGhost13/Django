@@ -297,3 +297,43 @@ def displayNames_list(request):
         displayNames = paginator.page(paginator.num_pages)  # Última página si la página solicitada está vacía
 
     return render(request, 'home/displayNames_list.html', {'displayNames': displayNames, 'query': query})
+
+
+def dateOperations_list(request):
+    query = request.GET.get('q', '')
+    dateOperations = DateOperation.objects.filter(status=True).order_by('date')
+    
+    if query:
+        dateOperations = dateOperations.filter(date__icontains=query)
+
+    paginator = Paginator(dateOperations, 3)
+    page_number = request.GET.get('page')
+
+    try:
+        dateOperations = paginator.page(page_number)
+    except PageNotAnInteger:
+        dateOperations = paginator.page(1)
+    except EmptyPage:
+        dateOperations = paginator.page(paginator.num_pages)
+
+    return render(request, 'home/dateOperations_list.html', {'dateOperations': dateOperations, 'query': query})
+
+
+def ipAssignations_list(request):
+    query = request.GET.get('q', '')
+    ipAssignations = IpAssignation.objects.filter(status=True).order_by('ip')
+    
+    if query:
+        ipAssignations = ipAssignations.filter(ip__icontains=query)
+
+    paginator = Paginator(ipAssignations, 3)
+    page_number = request.GET.get('page')
+
+    try:
+        ipAssignations = paginator.page(page_number)
+    except PageNotAnInteger:
+        ipAssignations = paginator.page(1)
+    except EmptyPage:
+        ipAssignations = paginator.page(paginator.num_pages)
+
+    return render(request, 'home/ipAssignations_list.html', {'ipAssignations': ipAssignations, 'query': query})

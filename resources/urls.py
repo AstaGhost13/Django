@@ -18,4 +18,14 @@ urlpatterns = [
     path('add-displayName/', views.add_displayName, name='add_displayName'),
     path('edit-displayName/<uuid:pk>/', views.edit_displayName, name='edit_displayName'),
     path('delete-displayName/<uuid:pk>/', views.delete_displayName, name='delete_displayName'),
+
+    #para dataOperation
+    path('add-dataOperation/', views.add_dataOperation, name='add_dataOperation'),
+    path('edit-dataOperation/<uuid:pk>/', views.edit_dataOperation, name='edit_dataOperation'),
+    path('delete-dataOperation/<uuid:pk>/', views.delete_dataOperation, name='delete_dataOperation'),
+
+    #para ip 
+    path('add-ipAssignation/', views.add_ipAssignation, name='add_ipAssignation'),
+    path('edit-ipAssignation/<uuid:pk>/', views.edit_ipAssignation, name='edit_ipAssignation'),
+    path('delete-ipAssignation/<uuid:pk>/', views.delete_ipAssignation, name='delete_ipAssignation'),
 ]

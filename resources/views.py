@@ -122,3 +122,81 @@ def delete_displayName(request, pk):
         messages.success(request, "Nombre de máquina desactivado correctamente.")
         return redirect('home:displayNames_list')
     return render(request, 'resources/delete_displayName.html', {'displayName': displayName})
+
+
+
+def add_dataOperation(request):
+    if request.method == 'POST':
+        form = DateOperationForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Operación de datos agregada correctamente.")
+            return redirect('home:dateOperations_list')
+        else:
+            messages.error(request, "Hubo un error al agregar la operación de datos.")
+    else:
+        form = DateOperationForm()
+    return render(request, 'resources/add_dateOperation.html', {'form': form})
+
+
+def edit_dataOperation(request, pk):
+    dataOperation = get_object_or_404(DateOperation, id=pk)
+    if request.method == 'POST':
+        form = DateOperationForm(request.POST, instance=dataOperation)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Operación de datos actualizada correctamente.")
+            return redirect('home:dateOperations_list')
+        else:
+            messages.error(request, "Hubo un error al actualizar la operación de datos.")
+    else:
+        form = DateOperationForm(instance=dataOperation)
+    return render(request, 'resources/edit_dateOperation.html', {'form': form, 'dataOperation': dataOperation})
+
+
+def delete_dataOperation(request, pk):
+    dataOperation = get_object_or_404(DateOperation, id=pk)
+    if request.method == 'POST':
+        dataOperation.status = False
+        dataOperation.save()
+        messages.success(request, "Operación de datos desactivada correctamente.")
+        return redirect('home:dateOperations_list')
+    return render(request, 'resources/delete_dateOperation.html', {'dataOperation': dataOperation})
+
+
+
+def add_ipAssignation(request):
+    if request.method == 'POST':
+        form = IpAssignationForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Asignación de IP agregada correctamente.")
+            return redirect('home:ipAssignations_list')
+        else:
+            messages.error(request, "Hubo un error al agregar la asignación de IP.")
+    else:
+        form = IpAssignationForm()
+    return render(request, 'resources/add_ipAssignation.html', {'form': form})
+
+def edit_ipAssignation(request, pk):
+    ipAssignation = get_object_or_404(IpAssignation, id=pk)
+    if request.method == 'POST':
+        form = IpAssignationForm(request.POST, instance=ipAssignation)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Asignación de IP actualizada correctamente.")
+            return redirect('home:ipAssignations_list')
+        else:
+            messages.error(request, "Hubo un error al actualizar la asignación de IP.")
+    else:
+        form = IpAssignationForm(instance=ipAssignation)
+    return render(request, 'resources/edit_ipAssignation.html', {'form': form, 'ipAssignation': ipAssignation})
+
+def delete_ipAssignation(request, pk):
+    ipAssignation = get_object_or_404(IpAssignation, id=pk)
+    if request.method == 'POST':
+        ipAssignation.status = False
+        ipAssignation.save()
+        messages.success(request, "Asignación de IP desactivada correctamente.")
+        return redirect('home:ipAssignations_list')
+    return render(request, 'resources/delete_ipAssignation.html', {'ipAssignation': ipAssignation})

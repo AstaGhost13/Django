@@ -64,3 +64,35 @@ class DisplayNameForm(forms.ModelForm):
                 'class': 'form-control',
             }),
         }
+
+class DateOperationForm(forms.ModelForm):
+    class Meta:
+        model = DateOperation
+        fields = ['product', 'date', 'running_time']
+        widgets = {
+            'product': forms.Select(attrs={
+                'class': 'form-control',
+            }),
+            'date': forms.DateInput(attrs={
+                'class': 'form-control',
+                'type': 'date',
+            }),
+            'running_time': forms.Select(attrs={
+                'class': 'form-control',
+            }),
+        }
+
+
+class IpAssignationForm(forms.ModelForm):
+    class Meta:
+        model = IpAssignation
+        fields = ['product', 'ip']
+        widgets = {
+            'product': forms.Select(attrs={
+                'class': 'form-control',
+            }),
+            'ip': forms.TextInput(attrs={
+                'class': 'form-control',
+                'placeholder': 'Ej: 192.168.1.1',
+            }),
+        }

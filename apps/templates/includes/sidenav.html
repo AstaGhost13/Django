@@ -100,25 +100,25 @@
             <div class="collapse show" id="recursos-tecnologicos" data-parent="#sidenav-collapse-main">
               <ul class="nav nav-sm flex-column">
                 <li class="nav-item">
-                  <a class="nav-link" href="#">
+                  <a class="nav-link" href="{% url 'home:hardwares_list' %}">
                     <i class="ni ni-tablet-button text-orange"></i>
                     <span class="nav-link-text">Hardware</span>
                   </a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link" href="#">
+                  <a class="nav-link" href="{% url 'home:softwares_list' %}">
                     <i class="ni ni-chart-bar-32 text-primary"></i>
                     <span class="nav-link-text">Software</span>
                   </a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link" href="#">
+                  <a class="nav-link" href="{% url 'home:displayNames_list' %}">
                     <i class="ni ni-laptop text-primary"></i>
                     <span class="nav-link-text">Display Name</span>
                   </a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link" href="#">
+                  <a class="nav-link" href="{% url 'home:dateOperations_list' %}">
                     <i class="ni ni-calendar-grid-58 text-primary"></i>
                     <span class="nav-link-text">Fecha de Operación</span>
                   </a>
@@ -136,7 +136,7 @@
             <div class="collapse show" id="redes-ip" data-parent="#sidenav-collapse-main">
               <ul class="nav nav-sm flex-column">
                 <li class="nav-item">
-                  <a class="nav-link" href="#">
+                  <a class="nav-link" href="{% url 'home:ipAssignations_list' %}">
                     <i class="ni ni-pin-3 text-primary"></i>
                     <span class="nav-link-text">Asignación de IP</span>
                   </a>

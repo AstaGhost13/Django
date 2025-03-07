@@ -23,10 +23,11 @@ CORE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = os.environ.get('SECRET_KEY', default = 'django-insecure-k1q9kg5by*exc)if$(qx=8tg&c(_7!j9c4$g7e3k!e0a!itogy')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-# DEBUG = 'RENDER' not in os.environ
-DEBUG = True
 
-ALLOWED_HOSTS = ['django-elu7.onrender.com', '127.0.0.1', 'localhost']
+DEBUG = 'RENDER' not in os.environ
+
+
+ALLOWED_HOSTS = []
 
 RENDER_EXTERNAL_HOSTNAME = os.environ.get('RENDER_EXTERNAL_HOSTNAME')
 if RENDER_EXTERNAL_HOSTNAME: 
@@ -122,9 +123,9 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/5.1/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'es-ec' # Español de Ecuador
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'America/Guayaquil'  # Zona horaria de Ecuador
 
 USE_I18N = True
 

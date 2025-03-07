@@ -6,7 +6,7 @@ from django.utils.translation import gettext_lazy as _
 class TipoDisco:
     MECANICO = 'A'
     SOLIDO = 'B'
-    NULO = 'B'
+    NULO = 'C'
     OPCIONES = [
         (MECANICO, _('MECANICO')),
         (SOLIDO, _('SOLIDO')),
@@ -22,9 +22,9 @@ class TiempoFuncionamiento:
     CINCO_MAS = '5+'
 
     OPCIONES = [
-        (UNO_DOS, _('1-2 Años')),
-        (DOS_TRES, _('2-3 Años')),
-        (TRES_CUATRO, _('3-4 Años')),
-        (CUATRO_CINCO, _('4-5 Años')),
-        (CINCO_MAS, _('5+ Años')),
+        (UNO_DOS, _('1 - 2 Años')),
+        (DOS_TRES, _('2 - 3 Años')),
+        (TRES_CUATRO, _('3 - 4 Años')),
+        (CUATRO_CINCO, _('4 - 5 Años')),
+        (CINCO_MAS, _('5 + Años')),
     ]

@@ -17,6 +17,7 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from hierarchy.forms import *
 from hierarchy.models import *
 from inventory.models import *
+from resources.models import *
 
 
 @login_required(login_url="/login/")
@@ -329,13 +330,109 @@ def productAssignments_list(request):
             paginator.num_pages
         )  # Última página si la página solicitada está vacía
 
-    return render(
-        request,
-        "home/productAssignments_list.html",
-        {
-            "asignaciones": asignaciones,
-            "query": query,
-            "sort_field": sort_field,
-            "sort_order": sort_order,
-        },
-    )
+    return render(request, 'home/productAssignments_list.html', {
+        'asignaciones': asignaciones,
+        'query': query,
+        'sort_field': sort_field,
+        'sort_order': sort_order,
+    })
+
+
+def hardwares_list(request):
+    query = request.GET.get('q', '')
+    hardwares = Hardware.objects.filter(status=True).order_by('processor')
+    
+    if query:
+        hardwares = hardwares.filter(processor__icontains=query)
+
+    paginator = Paginator(hardwares, 3)
+    page_number = request.GET.get('page')
+
+    try:
+        hardwares = paginator.page(page_number)
+    except PageNotAnInteger:
+        hardwares = paginator.page(1)  # Página por defecto si no es un número entero
+    except EmptyPage:
+        hardwares = paginator.page(paginator.num_pages)  # Última página si la página solicitada está vacía
+
+    return render(request, 'home/hardwares_list.html', {'hardwares': hardwares, 'query': query})
+
+
+def softwares_list(request):
+    query = request.GET.get('q', '')
+    softwares = Software.objects.filter(status=True).order_by('version')
+    
+    if query:
+        softwares = softwares.filter(version__icontains=query)
+
+    paginator = Paginator(softwares, 3)
+    page_number = request.GET.get('page')
+
+    try:
+        softwares = paginator.page(page_number)
+    except PageNotAnInteger:
+        softwares = paginator.page(1)  # Página por defecto si no es un número entero
+    except EmptyPage:
+        softwares = paginator.page(paginator.num_pages)  # Última página si la página solicitada está vacía
+
+    return render(request, 'home/softwares_list.html', {'softwares': softwares, 'query': query})
+
+
+def displayNames_list(request):
+    query = request.GET.get('q', '')
+    displayNames = DisplayName.objects.filter(status=True).order_by('name')
+    
+    if query:
+        displayNames = displayNames.filter(name__icontains=query)
+
+    paginator = Paginator(displayNames, 3)
+    page_number = request.GET.get('page')
+
+    try:
+        displayNames = paginator.page(page_number)
+    except PageNotAnInteger:
+        displayNames = paginator.page(1)  # Página por defecto si no es un número entero
+    except EmptyPage:
+        displayNames = paginator.page(paginator.num_pages)  # Última página si la página solicitada está vacía
+
+    return render(request, 'home/displayNames_list.html', {'displayNames': displayNames, 'query': query})
+
+
+def dateOperations_list(request):
+    query = request.GET.get('q', '')
+    dateOperations = DateOperation.objects.filter(status=True).order_by('date')
+    
+    if query:
+        dateOperations = dateOperations.filter(date__icontains=query)
+
+    paginator = Paginator(dateOperations, 3)
+    page_number = request.GET.get('page')
+
+    try:
+        dateOperations = paginator.page(page_number)
+    except PageNotAnInteger:
+        dateOperations = paginator.page(1)
+    except EmptyPage:
+        dateOperations = paginator.page(paginator.num_pages)
+
+    return render(request, 'home/dateOperations_list.html', {'dateOperations': dateOperations, 'query': query})
+
+
+def ipAssignations_list(request):
+    query = request.GET.get('q', '')
+    ipAssignations = IpAssignation.objects.filter(status=True).order_by('ip')
+    
+    if query:
+        ipAssignations = ipAssignations.filter(ip__icontains=query)
+
+    paginator = Paginator(ipAssignations, 3)
+    page_number = request.GET.get('page')
+
+    try:
+        ipAssignations = paginator.page(page_number)
+    except PageNotAnInteger:
+        ipAssignations = paginator.page(1)
+    except EmptyPage:
+        ipAssignations = paginator.page(paginator.num_pages)
+
+    return render(request, 'home/ipAssignations_list.html', {'ipAssignations': ipAssignations, 'query': query})

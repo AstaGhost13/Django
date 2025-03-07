@@ -1,0 +1,234 @@
+{% extends 'layouts/base.html' %}
+
+{% block title %} Lista de Software {% endblock title %}
+
+{% block content %}
+<!-- Header -->
+<div class="header bg-gradient-primary pb-8 pt-5 pt-md-8">
+  <div class="container-fluid">
+    <div class="header-body">
+      <h1 class="text-white">Lista de Software</h1>
+    </div>
+  </div>
+</div>
+
+<!-- Contenido principal -->
+<div class="container-fluid mt--7">
+  <div class="row">
+    <div class="col">
+      <div class="card shadow">
+        <div class="card-header bg-transparent d-flex justify-content-between align-items-center">
+          <h3 class="mb-0">Software Registrado</h3>
+          <a href="{% url 'resources:add_software' %}" class="btn btn-success">
+            Agregar Software
+          </a>
+        </div>
+        <div class="card-body">
+          
+          <!-- Mostrar mensajes de Django -->
+          <div class="container mt-4" style="min-height: 50px;">
+            {% if messages %}
+              {% for message in messages %}
+                <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                  {{ message }}
+                  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+              {% endfor %}
+
+              <script>
+                // Ocultar el mensaje después de 3 segundos
+                setTimeout(function() {
+                  $(".alert").alert('close');
+                }, 3000);
+              </script>
+            {% endif %}
+          </div>
+
+          <!-- Busqueda -->
+          <form method="GET" action="" class="mb-4">
+            <div class="row justify-content-center">
+              <div class="col-md-6">
+                <div class="form-group">
+                  <div class="input-group">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text"><i class="ni ni-zoom-split-in"></i></span>
+                    </div>
+                    <input class="form-control" name="q" placeholder="Buscar software..." type="text" value="{{ query }}">
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-2 text-center">
+                <button type="submit" class="btn btn-primary">Buscar</button>
+              </div>
+            </div>
+          </form>
+
+          <!-- Tabla de software -->
+          <div class="table-responsive">
+            <table class="table align-items-center table-dark">
+              <thead class="thead-light">
+                <tr>
+                  <th scope="col">
+                    <a href="?sort=version&order={% if sort_field == 'version' and sort_order == 'asc' %}desc{% else %}asc{% endif %}&q={{ query }}">
+                      Versión {% if sort_field == 'version' %}{% if sort_order == 'asc' %}&uarr;{% else %}&darr;{% endif %}{% endif %}
+                    </a>
+                  </th>
+                  <th scope="col">
+                    <a href="?sort=edition&order={% if sort_field == 'edition' and sort_order == 'asc' %}desc{% else %}asc{% endif %}&q={{ query }}">
+                      Edición {% if sort_field == 'edition' %}{% if sort_order == 'asc' %}&uarr;{% else %}&darr;{% endif %}{% endif %}
+                    </a>
+                  </th>
+                  <th scope="col">
+                    <a href="?sort=installation_date&order={% if sort_field == 'installation_date' and sort_order == 'asc' %}desc{% else %}asc{% endif %}&q={{ query }}">
+                      Fecha de Instalación {% if sort_field == 'installation_date' %}{% if sort_order == 'asc' %}&uarr;{% else %}&darr;{% endif %}{% endif %}
+                    </a>
+                  </th>
+                  <th scope="col">
+                    <a href="?sort=licenses&order={% if sort_field == 'licenses' and sort_order == 'asc' %}desc{% else %}asc{% endif %}&q={{ query }}">
+                      Licencias {% if sort_field == 'licenses' %}{% if sort_order == 'asc' %}&uarr;{% else %}&darr;{% endif %}{% endif %}
+                    </a>
+                  </th>
+                  <th scope="col">
+                    <a href="?sort=product__description&order={% if sort_field == 'product__description' and sort_order == 'asc' %}desc{% else %}asc{% endif %}&q={{ query }}">
+                      Producto {% if sort_field == 'product__description' %}{% if sort_order == 'asc' %}&uarr;{% else %}&darr;{% endif %}{% endif %}
+                    </a>
+                  </th>
+                  <th scope="col">
+                    <a href="?sort=status&order={% if sort_field == 'status' and sort_order == 'asc' %}desc{% else %}asc{% endif %}&q={{ query }}">
+                      Estado {% if sort_field == 'status' %}{% if sort_order == 'asc' %}&uarr;{% else %}&darr;{% endif %}{% endif %}
+                    </a>
+                  </th>
+                  <th scope="col">Acciones</th>
+                </tr>
+              </thead>
+              <tbody class="list">
+                {% if softwares %}
+                  {% for software in softwares %}
+                    <tr>
+                      <td>{{ software.version }}</td>
+                      <td>{{ software.edition }}</td>
+                      <td>{{ software.installation_date }}</td>
+                      <td>{% if software.licenses %}Sí{% else %}No{% endif %}</td>
+                      <td>{{ software.product.description }}</td>
+                      <td>
+                        {% if software.status %}
+                          <span class="badge badge-dot mr-4">
+                            <i class="bg-success"></i> Activo
+                          </span>
+                        {% else %}
+                          <span class="badge badge-dot mr-4">
+                            <i class="bg-danger"></i> Inactivo
+                          </span>
+                        {% endif %}
+                      </td>
+                      <td>
+                        <div class="dropdown">
+                          <a class="btn btn-sm btn-icon-only text-light" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <i class="fas fa-ellipsis-v"></i>
+                          </a>
+                          <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
+                            <a class="dropdown-item" href="{% url 'resources:edit_software' software.id %}">Editar</a>
+                            <a class="dropdown-item" href="#" data-toggle="modal" data-target="#modal-delete-{{ software.pkid }}">Eliminar</a>
+                          </div>
+                        </div>
+                      </td>
+                    </tr>
+
+                    <!-- Modal de confirmación para eliminar -->
+                    <div class="modal fade" id="modal-delete-{{ software.pkid }}" tabindex="-1" role="dialog" aria-labelledby="modal-delete-{{ software.pkid }}" aria-hidden="true">
+                      <div class="modal-dialog modal-danger modal-dialog-centered" role="document">
+                        <div class="modal-content bg-gradient-danger">
+                          <div class="modal-header">
+                            <h5 class="modal-title" id="modal-title-notification">Confirmar desactivación</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                              <span aria-hidden="true">×</span>
+                            </button>
+                          </div>
+                          <div class="modal-body">
+                            <div class="py-3 text-center">
+                              <i class="ni ni-bell-55 ni-3x"></i>
+                              <h4 class="heading mt-4">¿Estás seguro de que quieres desactivar este software?</h4>
+                              <p>El software ya no aparecerá en la lista de software activo.</p>
+                            </div>
+                          </div>
+                          <div class="modal-footer">
+                            <form method="POST" action="{% url 'resources:delete_software' software.id %}">
+                              {% csrf_token %}
+                              <button type="submit" class="btn btn-white">Sí, desactivar</button>
+                            </form>
+                            <button type="button" class="btn btn-link text-white ml-auto" data-dismiss="modal">Cerrar</button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  {% endfor %}
+                {% else %}
+                  <tr>
+                    <td colspan="7" class="text-center">
+                      <div class="alert alert-warning" role="alert">
+                        No se encontraron registros de software.
+                      </div>
+                    </td>
+                  </tr>
+                {% endif %}
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Paginación -->
+          <div class="d-flex justify-content-center mt-4 mb-4">
+            <nav aria-label="Page navigation example">
+              <ul class="pagination">
+                {% if softwares.has_previous %}
+                  <li class="page-item">
+                    <a class="page-link" href="?page={{ softwares.previous_page_number }}&sort={{ sort_field }}&order={{ sort_order }}&q={{ query }}" tabindex="-1">
+                      <i class="fa fa-angle-left"></i>
+                      <span class="sr-only">Anterior</span>
+                    </a>
+                  </li>
+                {% else %}
+                  <li class="page-item disabled">
+                    <a class="page-link" href="#" tabindex="-1">
+                      <i class="fa fa-angle-left"></i>
+                      <span class="sr-only">Anterior</span>
+                    </a>
+                  </li>
+                {% endif %}
+
+                {% for num in softwares.paginator.page_range %}
+                  {% if softwares.number == num %}
+                    <li class="page-item active"><a class="page-link" href="#">{{ num }}</a></li>
+                  {% else %}
+                    <li class="page-item"><a class="page-link" href="?page={{ num }}&sort={{ sort_field }}&order={{ sort_order }}&q={{ query }}">{{ num }}</a></li>
+                  {% endif %}
+                {% endfor %}
+
+                {% if softwares.has_next %}
+                  <li class="page-item">
+                    <a class="page-link" href="?page={{ softwares.next_page_number }}&sort={{ sort_field }}&order={{ sort_order }}&q={{ query }}">
+                      <i class="fa fa-angle-right"></i>
+                      <span class="sr-only">Siguiente</span>
+                    </a>
+                  </li>
+                {% else %}
+                  <li class="page-item disabled">
+                    <a class="page-link" href="#">
+                      <i class="fa fa-angle-right"></i>
+                      <span class="sr-only">Siguiente</span>
+                    </a>
+                  </li>
+                {% endif %}
+              </ul>
+            </nav>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  {% include "includes/footer.html" %}
+</div>
+{% endblock content %}

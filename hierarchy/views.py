@@ -19,6 +19,83 @@ def add_floor(request):
 
     return render(request, 'hierarchy/add_floor.html', {'form': form})
 
+def edit_floor(request, pk):
+    # Obtener el objeto Floor o devolver un error 404 si no existe
+    floor = get_object_or_404(Floor, id=pk)  # Usamos el campo `id` que es UUID
+
+    if request.method == 'POST':
+        # Obtener los datos del formulario
+        description = request.POST.get('description')
+        status = request.POST.get('status') == 'true'  # Convertir a booleano
+
+        # Validar los datos
+        if not description:
+            messages.error(request, "La descripción es obligatoria.")
+        else:
+            # Actualizar el objeto
+            floor.description = description
+            floor.status = status
+
+            # Guardar el objeto
+            try:
+                floor.save()
+                messages.success(request, "Piso actualizado correctamente.")
+                return redirect('home:floors_list')  # Redirigir a la lista de pisos
+            except Exception as e:
+                messages.error(request, f"Error al guardar el piso: {e}")
+
+    # Renderizar el formulario de edición
+    return render(request, 'hierarchy/edit_floor.html', {'floor': floor})
+def edit_position(request, pk):
+    position = get_object_or_404(Position, id=pk)
+
+    if request.method == 'POST':
+        form = PositionForm(request.POST, instance=position)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Posición actualizada correctamente.")
+            return redirect('home:positions_list')
+        else:
+            messages.error(request, "Hubo un error al actualizar la posición.")
+    else:
+        form = PositionForm(instance=position)
+
+    return render(request, 'hierarchy/edit_position.html', {
+        'form': form,
+        'position': position,
+    })
+def delete_position(request, pk):
+    position = get_object_or_404(Position, id=pk)
+    
+    if request.method == "POST":
+        try:
+            position.status = False  # Cambiar el estado a inactivo
+            position.save()  # Guardar el objeto
+            messages.success(request, "La posición ha sido desactivada correctamente.")
+        except Exception as e:
+            messages.error(request, f"Error al desactivar la posición: {e}")
+        
+        return redirect('home:positions_list')  # Redirigir a la lista de posiciones
+    
+    return render(request, 'home/delete_position.html', {'position': position})
+
+def delete_floor(request, pk):
+    # Obtener el objeto Floor o devolver un error 404 si no existe
+    floor = get_object_or_404(Floor, id=pk)  # Usamos el campo `id` que es UUID
+
+    if request.method == 'POST':
+        try:
+            # Cambiar el estado del piso a inactivo (soft delete)
+            floor.status = False
+            floor.save()
+            messages.success(request, "Piso desactivado correctamente.")
+        except Exception as e:
+            messages.error(request, f"Error al desactivar el piso: {e}")
+
+        return redirect('home:floors_list')  # Redirigir a la lista de pisos
+
+    # Si no es una solicitud POST, redirigir a la lista de pisos
+    return redirect('home:floors_list')
 
 def add_department(request):
     if request.method == 'POST':
@@ -33,8 +110,47 @@ def add_department(request):
         form = DepartmentForm()
 
     return render(request, 'hierarchy/add_department.html', {'form': form})
+def edit_department(request, pk):
+    department = get_object_or_404(Department, id=pk)
+    floors = Floor.objects.all()
+    departments = Department.objects.all()
 
+    if request.method == 'POST':
+        print("ID de piso recibido:", request.POST.get('id_floor'))  # Depuración
+        print("ID de departamento padre recibido:", request.POST.get('parent'))  # Depuración
+        form = DepartmentForm(request.POST, instance=department)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Departamento actualizado correctamente.")
+            return redirect('home:departments_list')
+        else:
+            messages.error(request, "Hubo un error al actualizar el departamento.")
+    else:
+        form = DepartmentForm(instance=department)
 
+    return render(request, 'hierarchy/edit_department.html', {
+        'form': form,
+        'department': department,
+        'floors': floors,
+        'departments': departments,
+    })
+    
+    
+def delete_department(request, pk):
+    # Obtener el departamento a desactivar
+    department = get_object_or_404(Department, id=pk)
+    
+    if request.method == "POST":
+        try:
+            department.status = False  # Cambiar el estado a inactivo
+            department.save()  # Guardar el objeto
+            messages.success(request, "El departamento ha sido desactivado correctamente.")
+        except Exception as e:
+            messages.error(request, f"Error al desactivar el departamento: {e}")
+        
+        return redirect('home:departments_list')  # Redirigir a la lista de departamentos
+    
+    return render(request, 'hierarchy/delete_department.html', {'department': department})
 def add_position(request):
     if request.method == 'POST':
         form = PositionForm(request.POST)

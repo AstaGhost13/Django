@@ -3,6 +3,8 @@
 {% block title %} Agregar Departamento {% endblock title %}
 
 {% block content %}
+
+<!-- Header -->
 <div class="header bg-gradient-primary pb-8 pt-5 pt-md-8">
     <div class="container-fluid">
         <div class="header-body">
@@ -11,40 +13,114 @@
     </div>
 </div>
 
+<!-- Contenido principal -->
 <div class="container-fluid mt--7">
     <div class="row">
         <div class="col">
             <div class="card shadow">
-                <div class="card-header bg-transparent">
+                <div class="card-header bg-transparent d-flex justify-content-between align-items-center">
                     <h3 class="mb-0">Formulario de Departamento</h3>
                 </div>
-
                 <div class="card-body">
+                    <!-- Mostrar mensajes de Django -->
                     {% if messages %}
                         <div class="container mt-3">
                             {% for message in messages %}
-                                <div class="alert alert-{{ message.tags }}">
+                                <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
                                     {{ message }}
+                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
                                 </div>
                             {% endfor %}
                         </div>
                     {% endif %}
 
+                    <!-- Formulario de Agregar Departamento -->
                     <form method="POST" action="{% url 'hierarchy:add_department' %}">
                         {% csrf_token %}
-                        {{ form.as_p }}  <!-- Renderiza el formulario dinámicamente -->
-                        <button type="submit" class="btn btn-primary">Guardar</button>
-                        <!-- Botón para redirigir a la lista de departamentos -->
-                    <a href="{% url 'home:departments_list' %}" class="btn btn-secondary">Ver Departamentos</a>
+                        <div class="row">
+                            <!-- Campo Descripción -->
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="id_description">Descripción</label>
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text"><i class="fas fa-building"></i></span>
+                                        </div>
+                                        {{ form.description }}
+                                    </div>
+                                    {% for error in form.description.errors %}
+                                    <small class="form-text text-danger">{{ error }}</small>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <!-- Campo Piso -->
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="id_floor">Piso</label>
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text"><i class="fas fa-layer-group"></i></span>
+                                        </div>
+                                        {{ form.id_floor }}
+                                    </div>
+                                    {% for error in form.id_floor.errors %}
+                                    <small class="form-text text-danger">{{ error }}</small>
+                                    {% endfor %}
+                                </div>
+                            </div>
+
+                            <!-- Campo Departamento Padre -->
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="parent">Departamento Padre</label>
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text"><i class="fas fa-sitemap"></i></span>
+                                        </div>
+                                        {{ form.parent }}
+                                    </div>
+                                    {% for error in form.parent.errors %}
+                                    <small class="form-text text-danger">{{ error }}</small>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <!-- Campo Estado -->
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="id_status">Estado</label>
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text"><i class="fas fa-toggle-on"></i></span>
+                                        </div>
+                                        {{ form.status }}
+                                    </div>
+                                    {% for error in form.status.errors %}
+                                    <small class="form-text text-danger">{{ error }}</small>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card-footer text-center">
+                            <button type="submit" class="btn btn-primary">Guardar</button>
+                            <a href="{% url 'home:departments_list' %}" class="btn btn-secondary">Ver Departamentos</a>
+                        </div>
                     </form>
-
-                      
-
-                </div>   
-                   
+                </div>
             </div>
         </div>
     </div>
+
+    <!-- Footer -->
     {% include "includes/footer.html" %}
 </div>
+
 {% endblock content %}

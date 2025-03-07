@@ -43,7 +43,6 @@ class PositionForm(forms.ModelForm):
         }
 
 
-
 class CustodiamForm(forms.ModelForm):
     class Meta:
         model = Custodiam

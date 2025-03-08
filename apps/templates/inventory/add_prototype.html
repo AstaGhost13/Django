@@ -74,7 +74,12 @@
                                         <div class="input-group-prepend">
                                             <span class="input-group-text"><i class="fas fa-tag"></i></span>
                                         </div>
-                                        {{ form.brand }}
+                                        <select id="id_brand" name="brand" class="form-control">
+                                            <option value="">Seleccione una marca</option>
+                                            {% for brand in form.brand.field.queryset %}
+                                                <option value="{{ brand.id }}">{{ brand.description }}</option>
+                                            {% endfor %}
+                                        </select>
                                     </div>
                                     {% for error in form.brand.errors %}
                                     <small class="form-text text-danger">{{ error }}</small>
@@ -94,4 +99,35 @@
     </div>
     {% include "includes/footer.html" %}
 </div>
+
+<!-- AJAX para Filtrar Marcas -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function () {
+        let tipoSelect = $("#id_tipo");
+        let brandSelect = $("#id_brand");
+
+        function updateBrands() {
+            let selectedTipo = tipoSelect.val();
+            brandSelect.empty().append('<option value="">Seleccione una marca</option>');
+
+            if (selectedTipo) {
+                $.getJSON("{% url 'inventory:filter_brands' %}", { tipo: selectedTipo }, function (data) {
+                    $.each(data, function (index, item) {
+                        brandSelect.append($('<option>', {
+                            value: item.id,
+                            text: item.description
+                        }));
+                    });
+                });
+            }
+        }
+
+        tipoSelect.change(updateBrands);
+        
+        // Ejecutar al cargar la página si hay valores preseleccionados
+        if (tipoSelect.val()) updateBrands();
+    });
+</script>
+
 {% endblock content %}

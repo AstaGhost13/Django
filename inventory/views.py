@@ -1,6 +1,7 @@
 from django.contrib import messages
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
+from django.views import View
 
 from inventory.enums.tipo_marca import TipoMarca
 from inventory.forms import *
@@ -75,7 +76,23 @@ def add_prototype(request):
         form = PrototypeForm()
     return render(request, 'inventory/add_prototype.html', {'form': form})
 
+def filter_brands(request):
+    tipo = request.GET.get('tipo', None)
+    if tipo:
+        brands = Brand.objects.filter(tipo=tipo).values('id', 'description')
+    else:
+        brands = Brand.objects.all().values('id', 'description')
+    
+    return JsonResponse(list(brands), safe=False)
 
+def filter_prototypes(request):
+    brand_id = request.GET.get('brand_id', None)
+    if brand_id:
+        prototypes = Prototype.objects.filter(brand_id=brand_id).values('id', 'description')
+    else:
+        prototypes = Prototype.objects.all().values('id', 'description')
+    
+    return JsonResponse(list(prototypes), safe=False)
 
 def edit_prototype(request, pk):
     prototype = get_object_or_404(Prototype, id=pk)
@@ -89,13 +106,16 @@ def edit_prototype(request, pk):
         else:
             messages.error(request, "Hubo un error al actualizar el modelo.")
     else:
-        form = PrototypeForm(instance=prototype)
+        # Inicializar el formulario con el tipo "Periféricos" por defecto
+        form = PrototypeForm(instance=prototype, initial={'tipo': TipoMarca.PERIFERICOS})
+
+        # Filtrar las marcas por tipo "Periféricos" por defecto
+        form.fields['brand'].queryset = Brand.objects.filter(tipo=TipoMarca.PERIFERICOS)
 
     return render(request, 'inventory/edit_prototype.html', {
         'form': form,
         'prototype': prototype,
     })
-
 
 
 
@@ -219,3 +239,11 @@ def product_details(request):
         except Product.DoesNotExist:
             return JsonResponse({'error': 'Producto no encontrado'}, status=404)
     return JsonResponse({'error': 'ID de producto no proporcionado'}, status=400)
+
+class GetBrandsByTypeView(View):
+    def get(self, request, *args, **kwargs):
+        tipo = request.GET.get('tipo')
+        if tipo:
+            brands = Brand.objects.filter(tipo=tipo).values('id', 'description')
+            return JsonResponse(list(brands), safe=False)
+        return JsonResponse([], safe=False)

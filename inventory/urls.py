@@ -13,12 +13,15 @@ urlpatterns = [
     path('add-prototype/', views.add_prototype, name='add_prototype'),
     path('edit-prototype/<uuid:pk>/', views.edit_prototype, name='edit_prototype'),
     path('delete-prototype/<uuid:pk>/', views.delete_prototype, name='delete_prototype'),
+    path('api/get-brands-by-type/', views.GetBrandsByTypeView.as_view(), name='get_brands_by_type'),
 
     #para productos
     path('add-product/', views.add_product, name='add_product'),
     path('edit-product/<uuid:pk>/', views.edit_product, name='edit_product'),
     path('delete-product/<uuid:pk>/', views.delete_product, name='delete_product'),
     path('product-details/', views.product_details, name='product_details'),
+    path('filter-brands/', views.filter_brands, name='filter_brands'),
+    path('filter-prototypes/', views.filter_prototypes, name='filter_prototypes'),
 
      #para asignaciones
     path('add-productAssignment/', views.add_productAssignment, name='add_productAssignment'),

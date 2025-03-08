@@ -70,5 +70,52 @@
         </div>
     </div>
 </div>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function () {
+        let tipoSelect = $("#id_tipo");
+        let brandSelect = $("#id_brand");
+        let prototypeSelect = $("#id_prototype");
 
+        function updateBrands() {
+            let selectedTipo = tipoSelect.val();
+            brandSelect.empty().append('<option value="">Seleccione una marca</option>');
+
+            if (selectedTipo) {
+                $.getJSON("{% url 'inventory:filter_brands' %}", { tipo: selectedTipo }, function (data) {
+                    $.each(data, function (index, item) {
+                        brandSelect.append($('<option>', {
+                            value: item.id,
+                            text: item.description
+                        }));
+                    });
+                });
+            }
+            updatePrototypes(); // También limpiar el select de modelos
+        }
+
+        function updatePrototypes() {
+            let selectedBrand = brandSelect.val();
+            prototypeSelect.empty().append('<option value="">Seleccione un modelo</option>');
+
+            if (selectedBrand) {
+                $.getJSON("{% url 'inventory:filter_prototypes' %}", { brand_id: selectedBrand }, function (data) {
+                    $.each(data, function (index, item) {
+                        prototypeSelect.append($('<option>', {
+                            value: item.id,
+                            text: item.description
+                        }));
+                    });
+                });
+            }
+        }
+
+        tipoSelect.change(updateBrands);
+        brandSelect.change(updatePrototypes);
+
+        // Ejecutar al cargar la página si hay valores preseleccionados
+        if (tipoSelect.val()) updateBrands();
+        if (brandSelect.val()) updatePrototypes();
+    });
+</script>
 {% endblock %}

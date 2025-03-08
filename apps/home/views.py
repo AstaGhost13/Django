@@ -210,7 +210,7 @@ def custodiams_list(request):
             "query": query,
             "sort_field": sort_field.lstrip(
                 "-"
-            ),  # Eliminar el prefijo '-' para el template
+            ),  
             "sort_order": sort_order,
         },
     )

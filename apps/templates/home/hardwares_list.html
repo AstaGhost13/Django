@@ -18,11 +18,17 @@
     <div class="col">
       <div class="card shadow">
         <div class="card-header bg-transparent d-flex justify-content-between align-items-center">
-          <h3 class="mb-0">Hardware Registrado</h3>
+          <div class="d-flex align-items-center">
+              <h3 class="mb-0">Hardware Registrado</h3>
+              <!-- Ícono de signo de interrogación con popover -->
+              <button type="button" class="btn btn-link ml-2 p-0" data-container="body" data-toggle="popover" data-placement="right" data-content="Esta página muestra la lista de hardware registrado en el sistema. El hardware incluye detalles como el procesador, la memoria RAM, el tamaño y tipo de disco, entre otros. Aquí puedes agregar nuevos registros de hardware, editar los existentes o desactivarlos. Utiliza la barra de búsqueda para encontrar hardware específico y ordena la lista según tus necesidades.">
+                  <i class="fas fa-question-circle text-primary"></i>
+              </button>
+          </div>
           <a href="{% url 'resources:add_hardware' %}" class="btn btn-success">
-            Agregar Hardware
+              Agregar Hardware
           </a>
-        </div>
+      </div>
         <div class="card-body">
           
           <!-- Mostrar mensajes de Django -->

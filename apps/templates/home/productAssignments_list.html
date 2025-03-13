@@ -18,11 +18,17 @@
     <div class="col">
       <div class="card shadow">
         <div class="card-header bg-transparent d-flex justify-content-between align-items-center">
-          <h3 class="mb-0">Asignaciones Registradas</h3>
+          <div class="d-flex align-items-center">
+              <h3 class="mb-0">Asignaciones Registradas</h3>
+              <!-- Ícono de signo de interrogación con popover -->
+              <button type="button" class="btn btn-link ml-2 p-0" data-container="body" data-toggle="popover" data-placement="right" data-content="Esta página muestra la lista de asignaciones de productos a custodios. Puedes agregar nuevas asignaciones, editar las existentes o desactivarlas. Utiliza la barra de búsqueda para encontrar asignaciones específicas y ordena la lista según tus necesidades.">
+                  <i class="fas fa-question-circle text-primary"></i>
+              </button>
+          </div>
           <a href="{% url 'inventory:add_productAssignment' %}" class="btn btn-success">
-            Agregar Asignación
+              Agregar Asignación
           </a>
-        </div>
+      </div>
         <div class="card-body">
           <!-- Mostrar mensajes de Django -->
           <div class="container mt-4" style="min-height: 50px;">

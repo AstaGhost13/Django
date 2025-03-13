@@ -18,11 +18,17 @@
     <div class="col">
       <div class="card shadow">
         <div class="card-header bg-transparent d-flex justify-content-between align-items-center">
-          <h3 class="mb-0">Nombres de Equipos Registrados</h3>
+          <div class="d-flex align-items-center">
+              <h3 class="mb-0">Nombres de Equipos Registrados</h3>
+              <!-- Ícono de signo de interrogación con popover -->
+              <button type="button" class="btn btn-link ml-2 p-0" data-container="body" data-toggle="popover" data-placement="right" data-content="Esta página muestra la lista de nombres de equipos registrados en el sistema. Los nombres de equipos son identificadores únicos asignados a los productos para facilitar su gestión y seguimiento. Aquí puedes agregar nuevos nombres de equipos, editar los existentes o desactivarlos. Utiliza la barra de búsqueda para encontrar nombres específicos y ordena la lista según tus necesidades.">
+                  <i class="fas fa-question-circle text-primary"></i>
+              </button>
+          </div>
           <a href="{% url 'resources:add_displayName' %}" class="btn btn-success">
-            Agregar Nombre de Equipo
+              Agregar Nombre de Equipo
           </a>
-        </div>
+      </div>
         <div class="card-body">
           
           <!-- Mostrar mensajes de Django -->

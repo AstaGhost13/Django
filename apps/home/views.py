@@ -278,7 +278,10 @@ def products_list(request):
     products = Product.objects.filter(status=True).order_by("description")
 
     if query:
-        products = products.filter(description__icontains=query)
+        products = products.filter(
+            Q(description__icontains=query) | Q(codigo__icontains=query)
+        )
+
 
     paginator = Paginator(products, 3)
     page_number = request.GET.get("page")

@@ -9,6 +9,7 @@ def add_floor(request):
     if request.method == 'POST':
         form = FloorForm(request.POST)
         if form.is_valid():
+            
             form.save()
             messages.success(request, "Piso agregado correctamente.")
             return redirect('hierarchy:add_floor')  # Redirige después de guardar

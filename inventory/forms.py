@@ -32,27 +32,33 @@ class PrototypeForm(forms.ModelForm):
                 'class': 'form-control',
             }),
         }
-        labels = {
-            'description': 'Descripción',
-            'tipo': 'Tipo de marca',
-            'brand': 'Marca asociada',
-        }
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        # Filtrar marcas según el tipo seleccionado
         if 'tipo' in self.data:
-            try:
-                tipo = self.data.get('tipo')
+            tipo = self.data.get('tipo')
+            if tipo in dict(TipoMarca.OPCIONES).keys():
                 self.fields['brand'].queryset = Brand.objects.filter(tipo=tipo)
-            except (ValueError, TypeError):
-                pass
         elif self.instance.pk:
-            # Si es una edición, filtrar marcas según el tipo del modelo
             self.fields['brand'].queryset = Brand.objects.filter(tipo=self.instance.tipo)
 
+    def clean(self):
+        cleaned_data = super().clean()
+        tipo = cleaned_data.get('tipo')
+        brand = cleaned_data.get('brand')
 
+        print(f"Tipo seleccionado en clean: {tipo}")  # Depuración
+        print(f"Marca seleccionada en clean: {brand}")  # Depuración
 
+        if brand and tipo:
+            if brand.tipo != tipo:
+                raise forms.ValidationError(
+                    f"La marca '{brand.description}' no pertenece al tipo seleccionado '{dict(TipoMarca.OPCIONES).get(tipo)}'."
+                )
+        elif not tipo and brand:
+            raise forms.ValidationError("Debes seleccionar un tipo antes de elegir una marca.")
+
+        return cleaned_data
 
 class ProductForm(forms.ModelForm):
     class Meta:

@@ -77,7 +77,7 @@
                                         <select id="id_brand" name="brand" class="form-control">
                                             <option value="">Seleccione una marca</option>
                                             {% for brand in form.brand.field.queryset %}
-                                                <option value="{{ brand.id }}">{{ brand.description }}</option>
+                                                <option value="{{ brand.pkid }}">{{ brand.description }}</option>
                                             {% endfor %}
                                         </select>
                                     </div>
@@ -106,23 +106,23 @@
     $(document).ready(function () {
         let tipoSelect = $("#id_tipo");
         let brandSelect = $("#id_brand");
-
+    
         function updateBrands() {
             let selectedTipo = tipoSelect.val();
             brandSelect.empty().append('<option value="">Seleccione una marca</option>');
-
+    
             if (selectedTipo) {
                 $.getJSON("{% url 'inventory:filter_brands' %}", { tipo: selectedTipo }, function (data) {
                     $.each(data, function (index, item) {
                         brandSelect.append($('<option>', {
-                            value: item.id,
+                            value: item.pkid,  // Asegúrate de enviar el pkid
                             text: item.description
                         }));
                     });
                 });
             }
         }
-
+    
         tipoSelect.change(updateBrands);
         
         // Ejecutar al cargar la página si hay valores preseleccionados

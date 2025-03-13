@@ -125,8 +125,8 @@ class Prototype(models.Model):
     
     tipo = models.CharField(
         max_length=1,
-        choices=TipoMarca.OPCIONES,  # Usa las opciones de la clase
-        blank=True,
+        choices=TipoMarca.OPCIONES,  
+        blank=False,
         null=True,
         verbose_name=_("Tipo de marca"),
     )
@@ -136,19 +136,20 @@ class Prototype(models.Model):
         Brand,
         verbose_name="Marca",
         on_delete=models.SET_NULL,
-        blank=True,
+        blank=False,
         null=True,
         related_name="fk_prototype_brand",
     )
     
     def clean(self):
-        # Verificar si la marca tiene un tipo
+        print(f"Tipo seleccionado: {self.tipo}")  # Depuración
+        print(f"Marca seleccionada: {self.brand}")
+        if self.tipo and self.brand and self.brand.tipo != self.tipo:
+            raise ValidationError(
+                f"La marca '{self.brand.description}' no pertenece al tipo seleccionado '{dict(TipoMarca.OPCIONES).get(self.tipo)}'."
+            )
         if not self.tipo and self.brand:
             raise ValidationError("Debes seleccionar un tipo antes de elegir una marca.")
-
-        if self.tipo and self.brand and self.brand.tipo != self.tipo:
-            raise ValidationError(f"La marca '{self.brand.description}' no pertenece al tipo '{dict(TipoMarca.OPCIONES).get(self.tipo)}'.")
-
         super().clean()
 
     
@@ -159,11 +160,10 @@ class Prototype(models.Model):
         return None
     
     def get_descriptions_for_type(self):
-        # Filtrar marcas según el tipo seleccionado
         if self.tipo:
-            marcas_filtradas = Brand.objects.filter(tipo=self.tipo)
             return [
-                f"{marca.description} ({dict(TipoMarca.OPCIONES).get(self.tipo)})" for marca in marcas_filtradas
+                f"{marca.description} ({dict(TipoMarca.OPCIONES).get(self.tipo)})"
+                for marca in Brand.objects.filter(tipo=self.tipo)
             ]
         return []
     def __str__(self):

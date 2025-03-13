@@ -65,12 +65,14 @@ def delete_brand(request, pk):
 
 def add_prototype(request):
     if request.method == 'POST':
+        print("Datos POST:", request.POST)  # Depuración
         form = PrototypeForm(request.POST)
         if form.is_valid():
             form.save()
             messages.success(request, "Modelo agregado correctamente.")
             return redirect('inventory:add_prototype')
         else:
+            print("Errores del formulario:", form.errors)  # Depuración
             messages.error(request, "Hubo un error al agregar el modelo.")
     else:
         form = PrototypeForm()
@@ -79,43 +81,38 @@ def add_prototype(request):
 def filter_brands(request):
     tipo = request.GET.get('tipo', None)
     if tipo:
-        brands = Brand.objects.filter(tipo=tipo).values('id', 'description')
+        brands = Brand.objects.filter(tipo=tipo).values('pkid', 'description')
     else:
-        brands = Brand.objects.all().values('id', 'description')
+        brands = Brand.objects.all().values('pkid', 'description')
     
     return JsonResponse(list(brands), safe=False)
 
 def filter_prototypes(request):
-    brand_id = request.GET.get('brand_id', None)
-    if brand_id:
+    brand_id = request.GET.get('brand_id')
+
+    try:
+        brand_id = int(brand_id)  # Convertir a entero si `pkid` es la clave primaria
         prototypes = Prototype.objects.filter(brand_id=brand_id).values('id', 'description')
-    else:
-        prototypes = Prototype.objects.all().values('id', 'description')
-    
+    except (ValueError, TypeError):
+        prototypes = Prototype.objects.none()  # Si no es un número, devuelve vacío
+
     return JsonResponse(list(prototypes), safe=False)
 
 def edit_prototype(request, pk):
     prototype = get_object_or_404(Prototype, id=pk)
-
     if request.method == 'POST':
+        print("Datos POST:", request.POST)  # Depuración
         form = PrototypeForm(request.POST, instance=prototype)
         if form.is_valid():
             form.save()
             messages.success(request, "Modelo actualizado correctamente.")
             return redirect('home:prototypes_list')
         else:
+            print("Errores del formulario:", form.errors)  # Depuración
             messages.error(request, "Hubo un error al actualizar el modelo.")
     else:
-        # Inicializar el formulario con el tipo "Periféricos" por defecto
-        form = PrototypeForm(instance=prototype, initial={'tipo': TipoMarca.PERIFERICOS})
-
-        # Filtrar las marcas por tipo "Periféricos" por defecto
-        form.fields['brand'].queryset = Brand.objects.filter(tipo=TipoMarca.PERIFERICOS)
-
-    return render(request, 'inventory/edit_prototype.html', {
-        'form': form,
-        'prototype': prototype,
-    })
+        form = PrototypeForm(instance=prototype)
+    return render(request, 'inventory/edit_prototype.html', {'form': form, 'prototype': prototype})
 
 
 
